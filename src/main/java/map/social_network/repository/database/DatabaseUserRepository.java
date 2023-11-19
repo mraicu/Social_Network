@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, User> {
 
-    public DatabaseUserRepository(String url, String username, String password) throws SQLException {
+    public DatabaseUserRepository(String url, String username, String password) {
         super(url, username, password);
     }
 

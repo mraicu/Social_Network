@@ -9,6 +9,23 @@ public class Friendship extends Entity<Tuple<Long, Long>> {
 
     LocalDateTime date;
 
+    private String leftName, rightName;
+
+    public String getLeftName() {
+        return leftName;
+    }
+
+    public String getRightName() {
+        return rightName;
+    }
+
+    public void setLeftName(String leftName) {
+        this.leftName = leftName;
+    }
+
+    public void setRightName(String rightName) {
+        this.rightName = rightName;
+    }
 
     public Friendship(Long id1, Long id2) {
 
@@ -19,6 +36,8 @@ public class Friendship extends Entity<Tuple<Long, Long>> {
     public LocalDateTime getDate() {
         return date;
     }
+
+
 
     public void setDate(LocalDateTime date) {
         this.date = date;

@@ -11,11 +11,15 @@ import java.util.stream.StreamSupport;
 import map.social_network.domain.Tuple;
 import map.social_network.domain.entities.Friendship;
 import map.social_network.domain.entities.User;
+import map.social_network.observer.NotifyStatus;
+import map.social_network.observer.Observable;
+import map.social_network.observer.Observer;
 import map.social_network.repository.Repository;
 import map.social_network.utils.Utils;
+import map.social_network.utils.events.UserChangeEvent;
 
-public class UserService {
-
+public class UserService implements Observable<UserChangeEvent> {
+    private List<Observer<UserChangeEvent>> userObservers = new ArrayList<>();
     private Repository<Long, User> userRepository;
     private Repository<Tuple<Long, Long>, Friendship> friendshipRepository;
 
@@ -26,11 +30,20 @@ public class UserService {
 
     public Optional<User> saveUser(String firstName, String secondName) {
         User user = new User(firstName, secondName);
-        return userRepository.save(user);
+        Optional<User> res = userRepository.save(user);
+        if (!res.isEmpty()) {
+            notifyObservers(new UserChangeEvent(NotifyStatus.ADD_USER, user));
+        }
+
+        return res;
     }
 
     public Optional<User> deleteUser(Long id) {
-        return userRepository.delete(id);
+        Optional<User> res  = userRepository.delete(id);
+        if (!res.isEmpty()) {
+            notifyObservers(new UserChangeEvent(NotifyStatus.DELETE_USER, res.get()));
+        }
+         return res;
     }
 
     public Optional<User> updateUser(User user) {
@@ -111,4 +124,18 @@ public class UserService {
         return names;
     }
 
+    @Override
+    public void addObserver(Observer<UserChangeEvent> e) {
+        userObservers.add(e);
+    }
+
+    @Override
+    public void removeObserver(Observer<UserChangeEvent> e) {
+        //
+    }
+
+    @Override
+    public void notifyObservers(UserChangeEvent t) {
+        userObservers.stream().forEach(o -> o.update(t));
+    }
 }

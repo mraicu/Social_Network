@@ -21,11 +21,11 @@ public class User extends Entity<Long> {
         setCount(id);
     }
 
-    public String getFirstName() {
+    public final String getFirstName() {
         return firstName;
     }
 
-    public String getLastName() {
+    public final String getLastName() {
         return lastName;
     }
 
@@ -66,11 +66,11 @@ public class User extends Entity<Long> {
         return null;
     }
 
-    public void setFirstName(String firstName) {
+    public final void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public void setLastName(String lastName) {
+    public final void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
