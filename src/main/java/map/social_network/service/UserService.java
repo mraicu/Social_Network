@@ -39,11 +39,13 @@ public class UserService implements Observable<UserChangeEvent> {
     }
 
     public Optional<User> deleteUser(Long id) {
-        Optional<User> res  = userRepository.delete(id);
-        if (!res.isEmpty()) {
-            notifyObservers(new UserChangeEvent(NotifyStatus.DELETE_USER, res.get()));
+        Optional<User> user = userRepository.findOne(id);
+        Optional<User> res = userRepository.delete(id);
+
+        if (res.isEmpty()) {
+            notifyObservers(new UserChangeEvent(NotifyStatus.DELETE_USER, user.get()));
         }
-         return res;
+        return res;
     }
 
     public Optional<User> updateUser(User user) {

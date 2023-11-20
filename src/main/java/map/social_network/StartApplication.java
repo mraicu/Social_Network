@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import map.social_network.controller.UserController;
+import map.social_network.controller.MainController;
 import map.social_network.domain.Tuple;
 import map.social_network.domain.entities.Friendship;
 import map.social_network.domain.entities.User;
@@ -17,6 +17,8 @@ import map.social_network.service.UserService;
 
 import java.io.IOException;
 import java.sql.SQLException;
+
+//TODO : interfetele paging, schimbat service, gui: sa permita nr de elemente pe pagina
 
 public class StartApplication extends Application {
 
@@ -31,6 +33,7 @@ public class StartApplication extends Application {
         Repository<Long, User> userRepository = new DatabaseUserRepository(url, username, password);
         Repository<Tuple<Long, Long>, Friendship> friendshipRepository = new DatabaseFriendshipRepository(url, username, password);
         userService = new UserService(userRepository, friendshipRepository);
+        friendshipService= new FriendshipService(friendshipRepository, userRepository);
 
         initView(primaryStage);
         primaryStage.setTitle("Social Network");
@@ -44,7 +47,8 @@ public class StartApplication extends Application {
         AnchorPane mainAnchorPane = mainLoader.load();
         primaryStage.setScene(new Scene(mainAnchorPane));
 
-        UserController userController = mainLoader.getController();
+        MainController userController = mainLoader.getController();
+
         userController.setUserService(userService, friendshipService);
     }
 

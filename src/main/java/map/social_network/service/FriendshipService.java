@@ -38,6 +38,17 @@ public class FriendshipService implements Observable<FriendshipChangeEvent> {
         return res;
     }
 
+    public Optional<Friendship> deleteFriendship(Tuple<Long,Long> id) {
+        Optional<Friendship> res = friendshipRepository.findOne(id);
+
+        friendshipRepository.delete(id);
+
+        if (!res.isEmpty()) {
+            notifyObservers(new FriendshipChangeEvent(NotifyStatus.DELETE_FRIENDSHIP, res.get()));
+        }
+        return res;
+    }
+
     public Iterable<Friendship> findAllService() {
         return this.friendshipRepository.findAll();
     }
