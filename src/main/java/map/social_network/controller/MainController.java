@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import map.social_network.domain.entities.Friendship;
@@ -21,6 +20,7 @@ import map.social_network.utils.events.UserChangeEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -106,6 +106,28 @@ public class MainController implements Observer<UserChangeEvent> {
     }
 
     @FXML
+    public void onUpdateUser(ActionEvent actionEvent) throws IOException {
+        User user = selectUserFromTable();
+
+        FXMLLoader updateUserLoader = new FXMLLoader();
+        FileInputStream fileInputStream = new FileInputStream(
+                new File("src/main/resources/map/social_network/view/update-user-view.fxml")
+        );
+
+        AnchorPane updateUserAnchorPane = updateUserLoader.load(fileInputStream);
+
+        Stage updateUserStage = new Stage();
+        updateUserStage.setTitle("Update User");
+        updateUserStage.setScene(new Scene(updateUserAnchorPane));
+
+        UpdateUserController userController= updateUserLoader.getController();
+        userController.setUser(user);
+        userController.setUserService(userService);
+
+        updateUserStage.show();
+
+    }
+    @FXML
     public void onDeleteUser(ActionEvent actionEvent) {
         User user = selectUserFromTable();
 
@@ -113,9 +135,6 @@ public class MainController implements Observer<UserChangeEvent> {
 
     }
 
-    @FXML
-    public void onUpdateUser(ActionEvent actionEvent) {
-    }
 
     @FXML
     public void onFilterUser(ActionEvent actionEvent) {
@@ -129,6 +148,7 @@ public class MainController implements Observer<UserChangeEvent> {
         );
 
         AnchorPane addFriendshipAnchorPane = addFriendshipLoader.load(fileInputStream);
+
 
         Stage addFriendshipStage = new Stage();
         addFriendshipStage.setTitle("Add Friendship");

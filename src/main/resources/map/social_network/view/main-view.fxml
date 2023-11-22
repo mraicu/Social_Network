@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="672.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="map.social_network.controller.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="672.0" prefWidth="654.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="map.social_network.controller.MainController">
    <children>
       <TableView fx:id="tableViewUserList" layoutX="14.0" layoutY="14.0" onMouseClicked="#selectUserFromTable" prefHeight="317.0" prefWidth="475.0">
         <columns>
@@ -13,12 +13,12 @@
           <TableColumn fx:id="tableColumnLastName" prefWidth="153.0" text="Last Name" />
         </columns>
       </TableView>
-      <AnchorPane layoutX="497.0" layoutY="14.0" prefHeight="317.0" prefWidth="111.0">
+      <AnchorPane layoutX="497.0" layoutY="14.0" prefHeight="317.0" prefWidth="126.0">
          <children>
-            <Button layoutX="24.0" layoutY="34.0" mnemonicParsing="false" onAction="#onAddUser" prefHeight="25.0" prefWidth="55.0" text="Add" />
-            <Button layoutX="24.0" layoutY="89.0" mnemonicParsing="false" onAction="#onDeleteUser" prefHeight="25.0" prefWidth="55.0" text="Delete" />
-            <Button layoutX="24.0" layoutY="146.0" mnemonicParsing="false" onAction="#onUpdateUser" text="Update" />
-            <Button layoutX="24.0" layoutY="205.0" mnemonicParsing="false" onAction="#onFilterUser" prefHeight="25.0" prefWidth="55.0" text="Filter" />
+            <Button layoutX="24.0" layoutY="34.0" mnemonicParsing="false" onAction="#onAddUser" prefHeight="25.0" prefWidth="79.0" text="Add" />
+            <Button layoutX="24.0" layoutY="89.0" mnemonicParsing="false" onAction="#onDeleteUser" prefHeight="25.0" prefWidth="79.0" text="Delete" />
+            <Button layoutX="24.0" layoutY="146.0" mnemonicParsing="false" onAction="#onUpdateUser" prefHeight="25.0" prefWidth="79.0" text="Update" />
+            <Button layoutX="24.0" layoutY="205.0" mnemonicParsing="false" onAction="#onFilterUser" prefHeight="25.0" prefWidth="79.0" text="Filter" />
          </children>
       </AnchorPane>
       <TableView fx:id="tableViewFriendship" layoutX="14.0" layoutY="343.0" onMouseClicked="#selectFriendshipFromTable" prefHeight="317.0" prefWidth="475.0">
@@ -28,10 +28,10 @@
             <TableColumn fx:id="tableColumnFriendshipDate" prefWidth="155.5" text="Friendship Date" />
         </columns>
       </TableView>
-      <AnchorPane layoutX="497.0" layoutY="343.0" prefHeight="317.0" prefWidth="111.0">
+      <AnchorPane layoutX="497.0" layoutY="343.0" prefHeight="317.0" prefWidth="126.0">
          <children>
-            <Button layoutX="28.0" layoutY="43.0" mnemonicParsing="false" onAction="#onAddFriendship" prefHeight="25.0" prefWidth="55.0" text="Add" />
-            <Button layoutX="28.0" layoutY="96.0" mnemonicParsing="false" onAction="#onDeleteFriendship" prefHeight="25.0" prefWidth="55.0" text="Delete" />
+            <Button layoutX="28.0" layoutY="43.0" mnemonicParsing="false" onAction="#onAddFriendship" prefHeight="25.0" prefWidth="79.0" text="Add" />
+            <Button layoutX="28.0" layoutY="96.0" mnemonicParsing="false" onAction="#onDeleteFriendship" prefHeight="25.0" prefWidth="79.0" text="Delete" />
          </children>
       </AnchorPane>
    </children>

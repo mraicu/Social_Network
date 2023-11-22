@@ -24,6 +24,7 @@ public class StartApplication extends Application {
 
     UserService userService;
     FriendshipService friendshipService;
+
     @Override
     public void start(Stage primaryStage) throws IOException, SQLException {
         String url = "jdbc:postgresql://localhost:5432/SocialNetwork";
@@ -33,7 +34,7 @@ public class StartApplication extends Application {
         Repository<Long, User> userRepository = new DatabaseUserRepository(url, username, password);
         Repository<Tuple<Long, Long>, Friendship> friendshipRepository = new DatabaseFriendshipRepository(url, username, password);
         userService = new UserService(userRepository, friendshipRepository);
-        friendshipService= new FriendshipService(friendshipRepository, userRepository);
+        friendshipService = new FriendshipService(friendshipRepository, userRepository);
 
         initView(primaryStage);
         primaryStage.setTitle("Social Network");
@@ -46,6 +47,10 @@ public class StartApplication extends Application {
 
         AnchorPane mainAnchorPane = mainLoader.load();
         primaryStage.setScene(new Scene(mainAnchorPane));
+
+        String css = this.getClass().getResource("view/css/main.css").toExternalForm();
+
+        mainAnchorPane.getStylesheets().add(css);
 
         MainController userController = mainLoader.getController();
 

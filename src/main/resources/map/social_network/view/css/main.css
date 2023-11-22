@@ -1,0 +1,23 @@
+.root {
+    -fx-background-color: #405356;
+}
+
+.label {
+
+}
+
+#title {
+
+}
+
+
+.button {
+    -fx-border-radius: 20;
+    -fx-background-radius: 15;
+    -fx-font-family: "Courier New";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 10px;
+    -fx-background-color: #D6A218;
+    -fx-padding: 10px 20px 10px 20px;
+    -fx-text-decoration: none;
+}

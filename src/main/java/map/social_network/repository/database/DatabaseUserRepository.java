@@ -35,7 +35,7 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
 
     @Override
     protected String getUpdateQuery() {
-        return "UPDATE Users SET first_name=?, last_name=?, WHERE user_id = ?";
+        return "UPDATE users SET first_name=?, last_name=? WHERE user_id = ?";
     }
 
 
@@ -61,7 +61,9 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
     @Override
     protected void setUpdateParameters(PreparedStatement preparedStatement, User entity) {
         try {
-            preparedStatement.setLong(1, entity.getId());
+            preparedStatement.setString(1, entity.getFirstName());
+            preparedStatement.setString(2, entity.getLastName());
+            preparedStatement.setLong(3, entity.getId());
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

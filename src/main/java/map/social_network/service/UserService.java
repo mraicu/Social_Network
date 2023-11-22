@@ -49,7 +49,12 @@ public class UserService implements Observable<UserChangeEvent> {
     }
 
     public Optional<User> updateUser(User user) {
-        return userRepository.update(user);
+        Optional<User> res = userRepository.update(user);
+        User newUser = userRepository.findOne(user.getId()).get();
+        if (res.isEmpty()) {
+            notifyObservers(new UserChangeEvent(NotifyStatus.UPDATE_USER, newUser));
+        }
+        return res;
     }
 
     public Iterable<User> findAllService() {
