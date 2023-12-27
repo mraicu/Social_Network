@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="322.0" style="-fx-background-color: #E2ECEB;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="map.social_network.controller.RegisterController">
+   <children>
+      <TextField fx:id="textFieldLastName" layoutX="87.0" layoutY="125.0" promptText="Last Name" style="-fx-background-color: transparent; -fx-border-color: #405C5C; -fx-border-width: 0px 0px 1px 0px;" />
+      <PasswordField fx:id="textFieldPassword" layoutX="87.0" layoutY="237.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #405C5C; -fx-border-width: 0px 0px 1px 0px;" />
+      <TextField fx:id="textFieldFirstName" layoutX="87.0" layoutY="73.0" promptText="First Name" style="-fx-background-color: transparent; -fx-border-color: #405C5C; -fx-border-width: 0px 0px 1px 0px;" />
+      <FontAwesomeIconView fill="#405c5c" glyphName="KEY" layoutX="65.0" layoutY="254.0" size="13.0" text="" />
+      <FontAwesomeIconView fill="#405c5c" glyphName="USER" layoutX="67.0" layoutY="143.0" size="13.0" text="" />
+      <FontAwesomeIconView fill="#405c5c" glyphName="ENVELOPE" layoutX="66.0" layoutY="198.0" text="" />
+      <FontAwesomeIconView fill="#405c5c" glyphName="USER" layoutX="68.0" layoutY="91.0" size="13" wrappingWidth="8.571428298950195" />
+      <Button fx:id="btnRegisterUser" layoutX="135.0" layoutY="309.0" mnemonicParsing="false" onAction="#onRegisterUser" style="-fx-background-color: #405C5C;" text="Register" textFill="#e2eceb" />
+      <TextField fx:id="textFieldEmail" layoutX="87.0" layoutY="180.0" promptText="Email" style="-fx-background-color: transparent; -fx-border-color: #405C5C; -fx-border-width: 0px 0px 1px 0px;" />
+   </children>
+</AnchorPane>

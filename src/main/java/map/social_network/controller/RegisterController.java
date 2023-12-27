@@ -3,29 +3,30 @@ package map.social_network.controller;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import map.social_network.domain.entities.User;
 import map.social_network.service.UserService;
 
-
 import java.util.Optional;
 
-public class AddUserController {
+public class RegisterController {
+    public Button btnRegisterUser;
+    public TextField textFieldLastName;
+    public PasswordField textFieldPassword;
+    public TextField textFieldFirstName;
+    public TextField textFieldEmail;
+
     UserService userService;
 
     Alert alert = new Alert(Alert.AlertType.NONE);
 
-    public TextField textFieldFirstName;
-    public TextField textFieldLastName;
-
-    public void setUserService(UserService service) {
-        this.userService = service;
-    }
-
-    public void onSubmitAdd(ActionEvent actionEvent) {
+    public void onRegisterUser(ActionEvent actionEvent) {
         String firstName = textFieldFirstName.getText();
         String lastName = textFieldLastName.getText();
+        String email = textFieldEmail.getText();
+        String password = textFieldPassword.getText();
 
         if (firstName.isEmpty() || lastName.isEmpty()) {
 
@@ -34,9 +35,8 @@ public class AddUserController {
             alert.show();
 
         } else {
-            Optional<User> res = userService.saveUser(firstName, lastName, lastName, lastName);
-
-            if (!res.isEmpty()) {
+            Optional<User> res = userService.saveUser(firstName, lastName, email, password);
+            if (!res.isEmpty() && userService.existsUserByEmail(res.get().getEmail()).isEmpty()) {
                 Button btnSubmitAdd = (Button) actionEvent.getSource();
                 Stage stage = (Stage) btnSubmitAdd.getScene().getWindow();
                 stage.close();
@@ -46,5 +46,9 @@ public class AddUserController {
                 alert.show();
             }
         }
+    }
+
+    public void setService(UserService userService) {
+        this.userService = userService;
     }
 }

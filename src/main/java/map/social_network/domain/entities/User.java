@@ -10,14 +10,18 @@ public class User extends Entity<Long> {
 
     private String firstName;
     private String lastName;
-    private List<User> friends=new ArrayList<>();
+    private String email;
+    private String password;
+    private List<User> friends = new ArrayList<>();
     private static long count = 1;
-    private Long id ;
+    private Long id;
 
-    public User(String firstName, String lastName) {
-        this.id=Long.valueOf(count);
+    public User(String firstName, String lastName, String email, String password) {
+        this.id = Long.valueOf(count);
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
+        this.password = password;
         setCount(id);
     }
 
@@ -31,6 +35,14 @@ public class User extends Entity<Long> {
 
     public List<User> getFriends() {
         return friends;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override

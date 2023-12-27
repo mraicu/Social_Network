@@ -28,8 +28,8 @@ public class UserService implements Observable<UserChangeEvent> {
         this.friendshipRepository = friendshipRepository;
     }
 
-    public Optional<User> saveUser(String firstName, String secondName) {
-        User user = new User(firstName, secondName);
+    public Optional<User> saveUser(String firstName, String lastName, String email, String password) {
+        User user = new User(firstName, lastName, email, password);
         Optional<User> res = userRepository.save(user);
         if (!res.isEmpty()) {
             notifyObservers(new UserChangeEvent(NotifyStatus.ADD_USER, user));
@@ -131,6 +131,13 @@ public class UserService implements Observable<UserChangeEvent> {
         return names;
     }
 
+    public List<User> existsUserByEmail(String email) {
+        Predicate<User> namePredicate = u -> u.getEmail().equals(email);
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                .filter(namePredicate)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public void addObserver(Observer<UserChangeEvent> e) {
         userObservers.add(e);
@@ -145,4 +152,6 @@ public class UserService implements Observable<UserChangeEvent> {
     public void notifyObservers(UserChangeEvent t) {
         userObservers.stream().forEach(o -> o.update(t));
     }
+
+
 }

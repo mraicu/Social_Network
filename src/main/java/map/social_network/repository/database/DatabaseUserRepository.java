@@ -15,7 +15,7 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
 
     @Override
     protected String getFindOneQuery() {
-        return "SELECT * FROM users WHERE user_id = ?";
+        return "SELECT * FROM users WHERE id = ?";
     }
 
     @Override
@@ -25,17 +25,17 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
 
     @Override
     protected String getSaveQuery() {
-        return "INSERT INTO users(first_name, last_name) VALUES (?, ?)";
+        return "INSERT INTO users(first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
     }
 
     @Override
     protected String getDeleteQuery() {
-        return "DELETE FROM users WHERE user_id = ?";
+        return "DELETE FROM users WHERE id = ?";
     }
 
     @Override
     protected String getUpdateQuery() {
-        return "UPDATE users SET first_name=?, last_name=? WHERE user_id = ?";
+        return "UPDATE users SET first_name=?, last_name=? WHERE id = ?";
     }
 
 
@@ -44,6 +44,8 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
         try {
             preparedStatement.setString(1, entity.getFirstName());
             preparedStatement.setString(2, entity.getLastName());
+            preparedStatement.setString(3, entity.getEmail());
+            preparedStatement.setString(4, entity.getPassword());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -64,6 +66,8 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
             preparedStatement.setString(1, entity.getFirstName());
             preparedStatement.setString(2, entity.getLastName());
             preparedStatement.setLong(3, entity.getId());
+            preparedStatement.setString(4, entity.getEmail());
+            preparedStatement.setString(5, entity.getPassword());
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -92,12 +96,15 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
 
     @Override
     protected User mapResultSetToEntity(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getLong("user_id");
+        Long id = resultSet.getLong("id");
         String firstName = resultSet.getString("first_name");
         String lastName = resultSet.getString("last_name");
-        User user = new User(firstName, lastName);
+        String email = resultSet.getString("email");
+        String password = resultSet.getString("password");
+        User user = new User(firstName, lastName, email, password);
         user.setId(id);
         return user;
     }
+
 
 }

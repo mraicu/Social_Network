@@ -57,4 +57,5 @@ public interface Repository<ID, E extends Entity<ID>> {
     Optional<E> update(E entity) ;
 
 
+
 }
