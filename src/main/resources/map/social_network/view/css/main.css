@@ -1,23 +1,80 @@
 .root {
     -fx-background-color: #405356;
-}
-
-.label {
 
 }
 
-#title {
 
+.table-view{
+    -fx-background-color: transparent;
 }
 
+.table-view:focused{
+    -fx-background-color: transparent;
+}
+.table-view .column-header-background{
+    -fx-background-color: linear-gradient(#405C5C 0%, #405356  100%);
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: #000000;
+}
+
+.table-row-cell{
+    -fx-background-color: -fx-table-cell-border-color, #ffffff;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+    -fx-border-color: #000000 ;
+    -fx-border-radius: 5;
+}
+
+
+.table-row-cell:selected {
+    -fx-background-color: #005797;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
 
 .button {
-    -fx-border-radius: 20;
-    -fx-background-radius: 15;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
     -fx-font-family: "Courier New";
+    -fx-background-color: #D6A218;
     -fx-text-fill: #000000;
     -fx-font-size: 10px;
-    -fx-background-color: #D6A218;
     -fx-padding: 10px 20px 10px 20px;
     -fx-text-decoration: none;
+}
+
+#btnHome{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 12px;
+}
+
+#btnSearch{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 12px;
+}
+
+#btnRequests{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 12px;
+}
+
+#btnFriends{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 12px;
+}
+
+#btnAccount{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 12px;
 }

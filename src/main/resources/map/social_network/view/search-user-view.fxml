@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="375.0" style="-fx-background-color: #e2eceb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="map.social_network.controller.MenuController">
+   <children>
+      <TextField layoutX="38.0" layoutY="33.0" prefHeight="27.0" prefWidth="279.0" promptText="Search" style="-fx-border-width: 1px 1px 1px 1px; -fx-border-color: #405356; -fx-background-color: transparent; -fx-border-radius: 10px;" />
+      <FontAwesomeIconView fill="#405356" glyphName="SEARCH" layoutX="328.0" layoutY="53.0" onMousePressed="#onSearchIcon" size="20" />
+      <TableView layoutX="34.0" layoutY="100.0" prefHeight="200.0" prefWidth="313.0">
+        <columns>
+          <TableColumn fx:id="columnNameSearch" prefWidth="114.0" text="Name" />
+          <TableColumn fx:id="columnAddSearch" prefWidth="105.0" text="Add" />
+            <TableColumn fx:id="columnSendSearch" prefWidth="93.0" text="Send Message" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnPreviousRequests" layoutX="149.0" layoutY="308.0" mnemonicParsing="false" text="&lt;" />
+      <Button fx:id="btnNextRequests" layoutX="208.0" layoutY="308.0" mnemonicParsing="false" text="&gt;" />
+      <Label fx:id="labelPageNumber" layoutX="177.0" layoutY="308.0" prefHeight="25.0" prefWidth="28.0" />
+   </children>
+</AnchorPane>

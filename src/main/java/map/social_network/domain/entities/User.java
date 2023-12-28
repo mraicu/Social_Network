@@ -1,5 +1,6 @@
 package map.social_network.domain.entities;
 
+import javafx.scene.control.Button;
 import map.social_network.domain.Entity;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class User extends Entity<Long> {
     private List<User> friends = new ArrayList<>();
     private static long count = 1;
     private Long id;
+
+    private Button sendMsg;
 
     public User(String firstName, String lastName, String email, String password) {
         this.id = Long.valueOf(count);
@@ -43,6 +46,10 @@ public class User extends Entity<Long> {
 
     public String getPassword() {
         return password;
+    }
+
+    public Button getSendMsg() {
+        return sendMsg;
     }
 
     @Override
@@ -88,6 +95,10 @@ public class User extends Entity<Long> {
 
     public void setFriends(List<User> friends) {
         this.friends = friends;
+    }
+
+    public void setSendMsg(Button sendMsg) {
+        this.sendMsg = sendMsg;
     }
 
     @Override

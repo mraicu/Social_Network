@@ -2,6 +2,7 @@ package map.social_network.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -16,16 +17,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 
 public class LogInController {
     public Button btnLogIn;
     public TextField textFieldEmail;
     UserService userService;
     Alert alert = new Alert(Alert.AlertType.NONE);
+
     //TODO de verificat ca exista si parola
     public void onLogIn(ActionEvent actionEvent) throws IOException {
-        if(!userService.existsUserByEmail(textFieldEmail.getText()).isEmpty()) {
+        if (!userService.existsUserByEmail(textFieldEmail.getText()).isEmpty()) {
             FXMLLoader menuUserLoader = new FXMLLoader();
+
             FileInputStream fileInputStream = new FileInputStream(
                     new File("src/main/resources/map/social_network/view/menu-view.fxml")
             );
@@ -33,18 +37,22 @@ public class LogInController {
             try {
                 BorderPane menuAnchorPane = menuUserLoader.load(fileInputStream);
 
-            Stage menuUserStage = new Stage();
-            menuUserStage.setTitle("Menu");
-            menuUserStage.setScene(new Scene(menuAnchorPane));
+                String css = this.getClass().getResource("/map/social_network/view/css/main.css").toExternalForm();
+                menuAnchorPane.getStylesheets().add(css);
 
-            MenuController menuController = menuUserLoader.getController();
-            menuController.set(userService);
+                Stage menuUserStage = new Stage();
+                menuUserStage.setTitle("Menu");
+                menuUserStage.setScene(new Scene(menuAnchorPane));
 
-            menuUserStage.show();
-            }catch (Exception e){
+                MenuController menuController = menuUserLoader.getController();
+                menuController.set(userService);
+
+
+                menuUserStage.show();
+            } catch (Exception e) {
                 System.out.println(e);
             }
-        }else{
+        } else {
             alert.setAlertType(Alert.AlertType.WARNING);
             alert.setContentText("Register first!");
             alert.show();

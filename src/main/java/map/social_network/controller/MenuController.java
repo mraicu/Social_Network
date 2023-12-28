@@ -3,6 +3,8 @@ package map.social_network.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -17,9 +19,13 @@ import java.util.logging.Logger;
 public class MenuController implements Initializable {
 
     public BorderPane borderPaneMenu;
+    public TableView tableViewRequests;
+    public Button btnHome;
+    public Button btnSearch;
+    public Button btnRequests;
+    public Button btnFriends;
+    public Button btnAccount;
     UserService userService;
-
-    private BorderPane bp = new BorderPane();
 
     public void onSearchWindow(MouseEvent mouseEvent) throws IOException {
      loadPage("search-user-view.fxml");
@@ -29,13 +35,16 @@ public class MenuController implements Initializable {
         loadPage("home-view.fxml");
     }
 
-    public void onRequestsWindow(MouseEvent mouseEvent) {
+    public void onRequestsWindow(MouseEvent mouseEvent) throws IOException {
+        loadPage("requests-view.fxml");
     }
 
-    public void onFriendsWindow(MouseEvent mouseEvent) {
+    public void onFriendsWindow(MouseEvent mouseEvent) throws IOException {
+        loadPage("friends-view.fxml");
     }
 
-    public void onLogOutWindow(MouseEvent mouseEvent) {
+    public void onAccountWindow(MouseEvent mouseEvent) throws IOException {
+        loadPage("account-view.fxml");
     }
 
     public void set(UserService userService) {
@@ -58,5 +67,17 @@ public class MenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    public void onSettings(MouseEvent mouseEvent) {
+    }
+
+    public void onSearchIcon(MouseEvent mouseEvent) {
+    }
+
+    public void onLogOut(MouseEvent mouseEvent) {
+    }
+
+    public void onDeleteAccount(MouseEvent mouseEvent) {
     }
 }
