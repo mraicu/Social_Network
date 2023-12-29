@@ -16,8 +16,10 @@ public class User extends Entity<Long> {
     private List<User> friends = new ArrayList<>();
     private static long count = 1;
     private Long id;
-
     private Button sendMsg;
+    private Button addBtn;
+
+    private String fullName;
 
     public User(String firstName, String lastName, String email, String password) {
         this.id = Long.valueOf(count);
@@ -50,6 +52,14 @@ public class User extends Entity<Long> {
 
     public Button getSendMsg() {
         return sendMsg;
+    }
+
+    public Button getAddBtn() {
+        return addBtn;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 
     @Override
@@ -99,6 +109,10 @@ public class User extends Entity<Long> {
 
     public void setSendMsg(Button sendMsg) {
         this.sendMsg = sendMsg;
+    }
+
+    public void setAddBtn(Button addBtn) {
+        this.addBtn = addBtn;
     }
 
     @Override

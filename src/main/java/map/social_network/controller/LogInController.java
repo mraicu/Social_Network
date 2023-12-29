@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import map.social_network.service.FriendshipService;
 import map.social_network.service.UserService;
 
 import java.io.File;
@@ -23,6 +24,8 @@ public class LogInController {
     public Button btnLogIn;
     public TextField textFieldEmail;
     UserService userService;
+
+    FriendshipService friendshipService;
     Alert alert = new Alert(Alert.AlertType.NONE);
 
     //TODO de verificat ca exista si parola
@@ -45,8 +48,7 @@ public class LogInController {
                 menuUserStage.setScene(new Scene(menuAnchorPane));
 
                 MenuController menuController = menuUserLoader.getController();
-                menuController.set(userService);
-
+                menuController.setService(userService, friendshipService);
 
                 menuUserStage.show();
             } catch (Exception e) {

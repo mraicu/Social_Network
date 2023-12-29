@@ -44,7 +44,7 @@ public class StartApplication extends Application {
         AnchorPane mainAnchorPane = mainLoader.load();
         primaryStage.setScene(new Scene(mainAnchorPane));
 
-        String css = this.getClass().getResource("view/css/main.css").toExternalForm();
+        String css = getClass().getResource("view/css/main.css").toExternalForm();
 
         mainAnchorPane.getStylesheets().add(css);
 

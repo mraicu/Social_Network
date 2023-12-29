@@ -1,5 +1,8 @@
 package map.social_network.repository.database;
 
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import map.social_network.domain.entities.User;
 
 import java.sql.PreparedStatement;
@@ -103,6 +106,14 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
         String password = resultSet.getString("password");
         User user = new User(firstName, lastName, email, password);
         user.setId(id);
+
+//        Image img = new Image(getClass().getResource("view/images/email.png").toExternalForm());
+//        ImageView view = new ImageView(img);
+        Button btnAdd = new Button("+");
+        Button btnSend = new Button("[]");
+//        btnSend.setGraphic(view);
+        user.setAddBtn(btnAdd);
+        user.setSendMsg(btnSend);
         return user;
     }
 
