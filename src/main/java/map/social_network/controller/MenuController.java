@@ -12,6 +12,7 @@ import map.social_network.domain.entities.Friendship;
 import map.social_network.domain.entities.User;
 
 import map.social_network.service.FriendshipService;
+import map.social_network.service.RequestService;
 import map.social_network.service.UserService;
 
 
@@ -32,6 +33,9 @@ public class MenuController {
 
     UserService userService;
     FriendshipService friendshipService;
+    RequestService requestService;
+
+    User user;
     Alert alert = new Alert(Alert.AlertType.NONE);
     ObservableList<User> userModel = FXCollections.observableArrayList();
     ObservableList<Friendship> friendshipsModel = FXCollections.observableArrayList();
@@ -71,11 +75,15 @@ public class MenuController {
         loadPage("account-view.fxml");
     }
 
-    public void setService(UserService userService, FriendshipService friendshipService) {
+    public void setService(UserService userService, FriendshipService friendshipService, RequestService requestService) {
         this.userService = userService;
         this.friendshipService = friendshipService;
+        this.requestService=requestService;
     }
 
+    public void setUser(User u) {
+        this.user = u;
+    }
 
     private void loadPage(String page) {
         String resourcePath = "/map/social_network/view/" + page;
@@ -89,9 +97,10 @@ public class MenuController {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, e);
         }
 
-        if (searchUserController == null && Objects.equals(page, "search-user-view.fxml")) {
+        if (Objects.equals(page, "search-user-view.fxml")) {
             searchUserController = loader.getController();
-            searchUserController.setService(userService, friendshipService);
+            searchUserController.setService(userService, friendshipService, requestService);
+            searchUserController.setUser(user);
         }
 
         if (homeController == null && Objects.equals(page, "home-view.fxml")) {
@@ -104,7 +113,7 @@ public class MenuController {
             requestsController.setService(userService, friendshipService);
         }
 
-        if (friendsController == null && Objects.equals(page, "friends-view.fxml")) {
+        if (Objects.equals(page, "friends-view.fxml")) {
             friendsController = loader.getController();
             friendsController.setService(userService, friendshipService);
         }

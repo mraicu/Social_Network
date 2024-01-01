@@ -112,8 +112,8 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
         Button btnAdd = new Button("+");
         Button btnSend = new Button("[]");
 //        btnSend.setGraphic(view);
-        user.setAddBtn(btnAdd);
-        user.setSendMsg(btnSend);
+//        user.setAddBtn(btnAdd);
+//        user.setSendMsg(btnSend);
         return user;
     }
 

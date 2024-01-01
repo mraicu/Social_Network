@@ -11,7 +11,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import map.social_network.domain.entities.User;
 import map.social_network.service.FriendshipService;
+import map.social_network.service.RequestService;
 import map.social_network.service.UserService;
 
 import java.io.File;
@@ -19,18 +21,21 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.List;
 
 public class LogInController {
     public Button btnLogIn;
     public TextField textFieldEmail;
     UserService userService;
-
     FriendshipService friendshipService;
+    RequestService requestService;
     Alert alert = new Alert(Alert.AlertType.NONE);
+    User user;
 
     //TODO de verificat ca exista si parola
     public void onLogIn(ActionEvent actionEvent) throws IOException {
-        if (!userService.existsUserByEmail(textFieldEmail.getText()).isEmpty()) {
+        List<User> userList = userService.existsUserByEmail(textFieldEmail.getText());
+        if (!userList.isEmpty()) {
             FXMLLoader menuUserLoader = new FXMLLoader();
 
             FileInputStream fileInputStream = new FileInputStream(
@@ -48,7 +53,8 @@ public class LogInController {
                 menuUserStage.setScene(new Scene(menuAnchorPane));
 
                 MenuController menuController = menuUserLoader.getController();
-                menuController.setService(userService, friendshipService);
+                menuController.setService(userService, friendshipService, requestService);
+                menuController.setUser(userList.get(0));
 
                 menuUserStage.show();
             } catch (Exception e) {
@@ -80,7 +86,11 @@ public class LogInController {
         registerUserStage.show();
     }
 
-    public void setUserService(UserService userService) {
+    public void setUserService(UserService userService,FriendshipService friendshipService, RequestService requestService) {
         this.userService = userService;
+        this.friendshipService=friendshipService;
+        this.requestService=requestService;
     }
+
+
 }

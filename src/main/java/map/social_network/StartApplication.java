@@ -8,11 +8,14 @@ import javafx.stage.Stage;
 import map.social_network.controller.LogInController;
 import map.social_network.domain.Tuple;
 import map.social_network.domain.entities.Friendship;
+import map.social_network.domain.entities.Request;
 import map.social_network.domain.entities.User;
 import map.social_network.repository.Repository;
 import map.social_network.repository.database.DatabaseFriendshipRepository;
+import map.social_network.repository.database.DatabaseRequestRepository;
 import map.social_network.repository.database.DatabaseUserRepository;
 import map.social_network.service.FriendshipService;
+import map.social_network.service.RequestService;
 import map.social_network.service.UserService;
 
 import java.io.IOException;
@@ -20,6 +23,7 @@ public class StartApplication extends Application {
 
     UserService userService;
     FriendshipService friendshipService;
+    RequestService requestService;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -29,8 +33,10 @@ public class StartApplication extends Application {
 
         Repository<Long, User> userRepository = new DatabaseUserRepository(url, username, password);
         Repository<Tuple<Long, Long>, Friendship> friendshipRepository = new DatabaseFriendshipRepository(url, username, password);
+        Repository<Long, Request> requestRepository = new DatabaseRequestRepository(url, username, password);
         userService = new UserService(userRepository, friendshipRepository);
         friendshipService = new FriendshipService(friendshipRepository, userRepository);
+        requestService = new RequestService(userRepository, requestRepository);
 
         initView(primaryStage);
         primaryStage.setTitle("Social Network");
@@ -50,7 +56,7 @@ public class StartApplication extends Application {
 
         LogInController logInController = mainLoader.getController();
 
-        logInController.setUserService(userService);
+        logInController.setUserService(userService, friendshipService, requestService);
     }
 
     public static void main(String[] args) {

@@ -50,13 +50,13 @@ public class User extends Entity<Long> {
         return password;
     }
 
-    public Button getSendMsg() {
-        return sendMsg;
-    }
-
-    public Button getAddBtn() {
-        return addBtn;
-    }
+//    public Button getSendMsg() {
+//        return sendMsg;
+//    }
+//
+//    public Button getAddBtn() {
+//        return addBtn;
+//    }
 
     public String getFullName() {
         return firstName + " " + lastName;
@@ -107,13 +107,13 @@ public class User extends Entity<Long> {
         this.friends = friends;
     }
 
-    public void setSendMsg(Button sendMsg) {
-        this.sendMsg = sendMsg;
-    }
-
-    public void setAddBtn(Button addBtn) {
-        this.addBtn = addBtn;
-    }
+//    public void setSendMsg(Button sendMsg) {
+//        this.sendMsg = sendMsg;
+//    }
+//
+//    public void setAddBtn(Button addBtn) {
+//        this.addBtn = addBtn;
+//    }
 
     @Override
     public String toString() {
