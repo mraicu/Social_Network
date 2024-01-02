@@ -20,6 +20,8 @@ public class RegisterController {
 
     UserService userService;
 
+    User user;
+
     Alert alert = new Alert(Alert.AlertType.NONE);
 
     public void onRegisterUser(ActionEvent actionEvent) {
@@ -50,5 +52,9 @@ public class RegisterController {
 
     public void setService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

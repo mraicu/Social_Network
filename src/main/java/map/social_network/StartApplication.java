@@ -14,6 +14,7 @@ import map.social_network.repository.Repository;
 import map.social_network.repository.database.DatabaseFriendshipRepository;
 import map.social_network.repository.database.DatabaseRequestRepository;
 import map.social_network.repository.database.DatabaseUserRepository;
+import map.social_network.repository.paging.PagingRepository;
 import map.social_network.service.FriendshipService;
 import map.social_network.service.RequestService;
 import map.social_network.service.UserService;
@@ -34,12 +35,16 @@ public class StartApplication extends Application {
         Repository<Long, User> userRepository = new DatabaseUserRepository(url, username, password);
         Repository<Tuple<Long, Long>, Friendship> friendshipRepository = new DatabaseFriendshipRepository(url, username, password);
         Repository<Long, Request> requestRepository = new DatabaseRequestRepository(url, username, password);
-        userService = new UserService(userRepository, friendshipRepository);
-        friendshipService = new FriendshipService(friendshipRepository, userRepository);
-        requestService = new RequestService(userRepository, requestRepository);
+
+        PagingRepository<Tuple<Long, Long>, Friendship> pagingFriendshipRepository = new DatabaseFriendshipRepository(url, username, password);
+        PagingRepository<Long, Request> pagingRequestRepository = new DatabaseRequestRepository(url, username, password);
+        PagingRepository<Long, User> pagingUserRepository = new DatabaseUserRepository(url, username, password);
+        userService = new UserService(userRepository, friendshipRepository, pagingUserRepository);
+        friendshipService = new FriendshipService(friendshipRepository, userRepository, pagingFriendshipRepository);
+        requestService = new RequestService(userRepository, requestRepository, pagingRequestRepository);
 
         initView(primaryStage);
-        primaryStage.setTitle("Social Network");
+        primaryStage.setTitle("Log In");
         primaryStage.show();
     }
 

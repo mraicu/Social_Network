@@ -19,9 +19,9 @@
             <TableColumn fx:id="columnSendSearch" prefWidth="93.0" text="Send Message" />
         </columns>
       </TableView>
-      <Button fx:id="btnPreviousRequests" layoutX="132.0" layoutY="308.0" mnemonicParsing="false" text="&lt;" />
-      <Button fx:id="btnNextRequests" layoutX="227.0" layoutY="308.0" mnemonicParsing="false" text="&gt;" />
-      <Label fx:id="labelPageNumber" layoutX="177.0" layoutY="308.0" prefHeight="25.0" prefWidth="28.0" />
+      <Button fx:id="btnPreviousRequests" layoutX="132.0" layoutY="308.0" mnemonicParsing="false" onAction="#onPreviousBtn" text="&lt;" />
+      <Button fx:id="btnNextRequests" layoutX="227.0" layoutY="308.0" mnemonicParsing="false" onAction="#onNextBtn" text="&gt;" />
+      <Label fx:id="labelPageNumber" alignment="CENTER" contentDisplay="CENTER" layoutX="158.0" layoutY="308.0" prefHeight="25.0" prefWidth="68.0" />
       <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="146.0" layoutY="369.0" onMousePressed="#onPreferencesSearch" prefHeight="17.0" prefWidth="90.0" text="Preferences" textAlignment="CENTER" />
    </children>
 </AnchorPane>

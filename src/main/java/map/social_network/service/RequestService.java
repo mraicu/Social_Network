@@ -7,11 +7,16 @@ import map.social_network.observer.NotifyStatus;
 import map.social_network.observer.Observable;
 import map.social_network.observer.Observer;
 import map.social_network.repository.Repository;
+import map.social_network.repository.paging.Page;
+import map.social_network.repository.paging.Pageable;
+import map.social_network.repository.paging.PageableImplementation;
+import map.social_network.repository.paging.PagingRepository;
 import map.social_network.utils.events.RequestChangeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -21,17 +26,21 @@ public class RequestService implements Observable<RequestChangeEvent> {
     private List<Observer<RequestChangeEvent>> requestObserver = new ArrayList<>();
     private Repository<Long, User> userRepository;
     private Repository<Long, Request> requestRepository;
-//    private PagingRepository<Long, Request> pagingRequestRepository;
+    private PagingRepository<Long, Request> pagingRequestRepository;
 
     private int page;
     private int size;
+    private Pageable pageable;
+    User user;
 
-//    private Pageable pageable;
-
-    public RequestService(Repository<Long, User> userRepository, Repository<Long, Request> requestRepository) {
+    public RequestService(Repository<Long, User> userRepository, Repository<Long, Request> requestRepository, PagingRepository<Long, Request> pagingRequestRepository) {
         this.userRepository = userRepository;
         this.requestRepository = requestRepository;
-//        this.pagingRequestRepository= pagingRequestRepository;
+        this.pagingRequestRepository = pagingRequestRepository;
+    }
+
+    public void setUser(User u) {
+        this.user = u;
     }
 
     public Optional<Request> saveRequest(User from, User to) {
@@ -72,7 +81,7 @@ public class RequestService implements Observable<RequestChangeEvent> {
 
     public List<Request> findByUserId(Long userIdTo) {
         Predicate<Request> predicate = r -> r.getTo().getId() == userIdTo;
-        Iterable<Request> all= requestRepository.findAll();
+        Iterable<Request> all = requestRepository.findAll();
         return StreamSupport.stream(requestRepository.findAll().spliterator(), false)
                 .filter(predicate)
                 .collect(Collectors.toList());
@@ -93,34 +102,34 @@ public class RequestService implements Observable<RequestChangeEvent> {
         requestObserver.stream().forEach(o -> o.update(t));
     }
 
-//    public void setPageSize(int size) {
-//        this.size = size;
-//    }
+    public void setPageSize(int size) {
+        this.size = size;
+    }
 
-//    public void setPageable(Pageable pageable) {
-//        this.pageable = pageable;
-//    }
-//
-//    public Set<Request> getPreviousRequests() {
-//        if (this.page > 0){
-//            this.page--;
-//        }
-//        return getUsesOnThisPage(this.page);
-//    }
-//
-//    public Set<Request> getNextRequests() {
-//        long numRequests = StreamSupport.stream(findAllService().spliterator(), false).count();
-//        if ((numRequests / size ) > page) {
-//            this.page++;
-//        }
-//        return getUsesOnThisPage(this.page);
-//    }
+    public void setPageable(Pageable pageable) {
+        this.pageable = pageable;
+    }
 
-//    public Set<Request> getUsesOnThisPage(int page) {
-//        this.page = page;
-//        Pageable pageable = new PageableImplementation(page, size);
-//        Page<Request> friendshipPage = pagingRequestRepository.findAll(pageable);
-//        return friendshipPage.getContent().collect(Collectors.toSet());
-//    }
+    public Set<Request> getPreviousRequests() {
+        if (this.page > 0) {
+            this.page--;
+        }
+        return getUsesOnThisPage(this.page);
+    }
+
+    public Set<Request> getNextRequests() {
+        long numRequests = StreamSupport.stream(findAllService().spliterator(), false).count();
+        if ((numRequests / size) > page) {
+            this.page++;
+        }
+        return getUsesOnThisPage(this.page);
+    }
+
+    public Set<Request> getUsesOnThisPage(int page) {
+        this.page = page;
+        Pageable pageable = new PageableImplementation(page, size);
+        Page<Request> friendshipPage = pagingRequestRepository.findAll(pageable, user);
+        return friendshipPage.getContent().collect(Collectors.toSet());
+    }
 
 }

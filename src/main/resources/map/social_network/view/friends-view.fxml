@@ -6,18 +6,17 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="375.0" style="-fx-background-color: #e2eceb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="map.social_network.controller.FriendsController">
    <children>
-      <TableView layoutX="15.0" layoutY="14.0" prefHeight="307.0" prefWidth="345.0">
+      <TableView fx:id="tableFriends" layoutX="15.0" layoutY="14.0" prefHeight="307.0" prefWidth="345.0">
         <columns>
-          <TableColumn prefWidth="118.0" text="Name" />
-          <TableColumn prefWidth="120.0" text="Send Message" />
-            <TableColumn prefWidth="106.0" text="Remove" />
+          <TableColumn fx:id="columnName" prefWidth="118.0" text="Name" />
+          <TableColumn fx:id="columnSendMsg" prefWidth="120.0" text="Send Message" />
+            <TableColumn fx:id="columnRemove" prefWidth="106.0" text="Remove" />
         </columns>
       </TableView>
-      <Button fx:id="btnPreviousRequests" layoutX="146.0" layoutY="330.0" mnemonicParsing="false" text="&lt;" />
-      <Button fx:id="btnNextRequests" layoutX="205.0" layoutY="330.0" mnemonicParsing="false" text="&gt;" />
+      <Button layoutX="146.0" layoutY="330.0" mnemonicParsing="false" onAction="#onPreviousBtn" text="&lt;" />
+      <Button layoutX="205.0" layoutY="330.0" mnemonicParsing="false" onAction="#onNextBtn" text="&gt;" />
       <Label fx:id="labelPageNumber" layoutX="174.0" layoutY="330.0" prefHeight="25.0" prefWidth="28.0" />
    </children>
 </AnchorPane>

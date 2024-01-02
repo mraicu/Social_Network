@@ -16,8 +16,8 @@
         </columns>
       </TableView>
       <Label layoutX="281.0" layoutY="368.0" onMouseClicked="#onSettings" prefHeight="17.0" prefWidth="80.0" text="Settings" />
-      <Button fx:id="btnPreviousRequests" layoutX="146.0" layoutY="332.0" mnemonicParsing="false" text="&lt;" />
-      <Button fx:id="btnNextRequests" layoutX="205.0" layoutY="332.0" mnemonicParsing="false" text="&gt;" />
+      <Button fx:id="btnPreviousRequests" layoutX="146.0" layoutY="332.0" mnemonicParsing="false" onAction="#onPreviousBtn" text="&lt;" />
+      <Button layoutX="205.0" layoutY="332.0" mnemonicParsing="false" onAction="#onNextBtn" text="&gt;" />
       <Label fx:id="labelPageNumber" layoutX="174.0" layoutY="332.0" prefHeight="25.0" prefWidth="28.0" />
    </children>
 </AnchorPane>

@@ -2,14 +2,19 @@ package map.social_network.repository.database;
 
 import map.social_network.domain.Tuple;
 import map.social_network.domain.entities.Friendship;
+import map.social_network.domain.entities.User;
+import map.social_network.repository.paging.Page;
+import map.social_network.repository.paging.Pageable;
+import map.social_network.repository.paging.Paginator;
+import map.social_network.repository.paging.PagingRepository;
 import map.social_network.utils.Utils;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DatabaseFriendshipRepository extends DatabaseAbstractRepository<Tuple<Long, Long>, Friendship> {
+public class DatabaseFriendshipRepository extends DatabaseAbstractRepository<Tuple<Long, Long>, Friendship> implements PagingRepository<Tuple<Long, Long>, Friendship> {
 
     public DatabaseFriendshipRepository(String url, String username, String password) {
         super(url, username, password);
@@ -115,5 +120,48 @@ public class DatabaseFriendshipRepository extends DatabaseAbstractRepository<Tup
         Friendship friendship = new Friendship(leftUser, rightUser);
         friendship.setDate(localDateTime);
         return friendship;
+    }
+
+    @Override
+    public Page<Friendship> findAll(Pageable pageable) {
+        List<Friendship> entities = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement statement = connection.prepareStatement( "SELECT * FROM friendship ORDER BY left_user LIMIT ? OFFSET ?")) {
+            statement.setInt(1, pageable.getPageSize());
+            statement.setInt(2, pageable.getPageNumber() * pageable.getPageSize());
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    entities.add(mapResultSetToEntity(resultSet));
+                }
+            }
+            Paginator<Friendship> paginator = new Paginator<Friendship>(pageable, entities);
+            return paginator.paginate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Page<Friendship> findAll(Pageable pageable, User user) {
+        List<Friendship> entities = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+
+             PreparedStatement statement = connection.prepareStatement( "SELECT * FROM friendship WHERE left_user = ? OR right_user = ? ORDER BY left_user LIMIT ? OFFSET ?")) {
+//            while(entities.size()!=3 ){
+            statement.setLong(1, user.getId());
+            statement.setLong(2,user.getId());
+            statement.setInt(3, pageable.getPageSize());
+            statement.setInt(4, pageable.getPageNumber() * pageable.getPageSize());
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    entities.add(mapResultSetToEntity(resultSet));
+                }
+            }
+//            }
+            Paginator<Friendship> paginator = new Paginator<Friendship>(pageable, entities);
+            return paginator.paginate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

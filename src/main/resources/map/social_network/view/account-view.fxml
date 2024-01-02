@@ -14,7 +14,7 @@
             <Image url="@images/user.png" />
          </image>
       </ImageView>
-      <Label fx:id="labelNameAccount" layoutX="134.0" layoutY="233.0" prefHeight="17.0" prefWidth="115.0" />
-      <Label fx:id="labelEmailAccount" layoutX="134.0" layoutY="256.0" prefHeight="17.0" prefWidth="115.0" />
+      <Label fx:id="labelNameAccount" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="231.0" prefHeight="17.0" prefWidth="374.0" />
+      <Label fx:id="labelEmailAccount" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="256.0" prefHeight="17.0" prefWidth="364.0" />
    </children>
 </AnchorPane>

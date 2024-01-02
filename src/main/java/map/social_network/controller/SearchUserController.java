@@ -2,6 +2,7 @@ package map.social_network.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import map.social_network.domain.entities.Friendship;
+import map.social_network.domain.entities.Request;
 import map.social_network.domain.entities.User;
 import map.social_network.observer.Observer;
 import map.social_network.service.FriendshipService;
@@ -24,6 +26,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
 
 public class SearchUserController implements Observer<UserChangeEvent> {
     @FXML
@@ -57,12 +60,20 @@ public class SearchUserController implements Observer<UserChangeEvent> {
     Alert alert = new Alert(Alert.AlertType.NONE);
     ObservableList<User> userModel = FXCollections.observableArrayList();
     ObservableList<Friendship> friendshipsModel = FXCollections.observableArrayList();
+    private int pageIndex = 0;
+
+    private int pageSize = 3;
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
 
     public void setService(UserService userService, FriendshipService friendshipService, RequestService requestService) {
         this.userService = userService;
         this.userService.addObserver(this);
         this.friendshipService = friendshipService;
-        this.requestService=requestService;
+        this.requestService = requestService;
+
 
         initModel();
     }
@@ -103,14 +114,25 @@ public class SearchUserController implements Observer<UserChangeEvent> {
         });
 
         // Set action handler for the addBtn button
-        //TODO
         columnAddSearch.setCellFactory(tc -> new TableCell<>() {
             final Button addBtnButton = new Button("+");
 
             {
                 addBtnButton.setOnAction(event -> {
                     User selectedUser = getTableView().getItems().get(getIndex());
-                    requestService.saveRequest(user, selectedUser);
+
+                    List<Request> requests = requestService.findByUserId(selectedUser.getId());
+
+                    boolean crtUserExistsInRequests = requests.stream()
+                            .anyMatch(request -> request.getFrom().equals(user) || request.getTo().equals(user));
+
+                    if (!crtUserExistsInRequests) {
+                        requestService.saveRequest(user, selectedUser);
+                    } else {
+                        alert.setAlertType(Alert.AlertType.WARNING);
+                        alert.setContentText("Request already sent!");
+                        alert.show();
+                    }
                 });
             }
 
@@ -125,10 +147,14 @@ public class SearchUserController implements Observer<UserChangeEvent> {
             }
         });
     }
+
     private void initModel() {
-        Iterable<User> users = userService.findAllService();
+        userService.setPageSize(pageSize);
+        Iterable<User> users = userService.getUsesOnThisPage(pageIndex);
+
         List<User> userList = StreamSupport.stream(users.spliterator(), false)
                 .collect(Collectors.toList());
+        labelPageNumber.setText(String.valueOf(userService.getPage()));
         userModel.setAll(userList);
     }
 
@@ -138,11 +164,12 @@ public class SearchUserController implements Observer<UserChangeEvent> {
         if (nameTo.isEmpty()) {
             users = (List<User>) userService.findAllService();
         } else {
-
             users = userService.filterFrendshipByString(nameTo);
-            userModel.setAll(users);
         }
-
+        userModel.setAll(users);
+        labelPageNumber.setText(String.valueOf(0));
+        userService.setPage(0);
+        this.pageIndex = 0;
     }
 
 
@@ -156,9 +183,6 @@ public class SearchUserController implements Observer<UserChangeEvent> {
         FileInputStream fileInputStream = new FileInputStream(
                 new File("src/main/resources/map/social_network/view/preferences-view.fxml")
         );
-
-//        String css = getClass().getResource("map/social_network/view/css/main.css").toExternalForm();
-
         AnchorPane preferencesAnchorPane = preferencesLoader.load(fileInputStream);
 
 
@@ -166,11 +190,27 @@ public class SearchUserController implements Observer<UserChangeEvent> {
         updateUserStage.setTitle("Preferences");
         updateUserStage.setScene(new Scene(preferencesAnchorPane));
 
-//        preferencesAnchorPane.getStylesheets().add(css);
-
         PreferencesController userController = preferencesLoader.getController();
         userController.setService(userService);
 
         updateUserStage.show();
+    }
+
+
+    public void onPreviousBtn(ActionEvent actionEvent) {
+        Iterable<User> users = userService.getPreviousUsers();
+        List<User> userList = StreamSupport.stream(users.spliterator(), false)
+                .collect(Collectors.toList());
+        userModel.setAll(userList);
+
+        labelPageNumber.setText(String.valueOf(userService.getPage()));
+    }
+
+    public void onNextBtn(ActionEvent actionEvent) {
+        Iterable<User> users = userService.getNextUsers();
+        List<User> userList = StreamSupport.stream(users.spliterator(), false)
+                .collect(Collectors.toList());
+        labelPageNumber.setText(String.valueOf(userService.getPage()));
+        userModel.setAll(userList);
     }
 }

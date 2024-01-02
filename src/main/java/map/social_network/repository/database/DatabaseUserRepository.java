@@ -4,12 +4,16 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import map.social_network.domain.entities.User;
+import map.social_network.repository.paging.Page;
+import map.social_network.repository.paging.Pageable;
+import map.social_network.repository.paging.Paginator;
+import map.social_network.repository.paging.PagingRepository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, User> {
+public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, User>  implements PagingRepository<Long, User> {
 
     public DatabaseUserRepository(String url, String username, String password) {
         super(url, username, password);
@@ -118,4 +122,27 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
     }
 
 
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        List<User> entities = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement statement = connection.prepareStatement( "SELECT * FROM users ORDER BY id LIMIT ? OFFSET ?")) {
+            statement.setInt(1, pageable.getPageSize());
+            statement.setInt(2, pageable.getPageNumber() * pageable.getPageSize());
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    entities.add(mapResultSetToEntity(resultSet));
+                }
+            }
+            Paginator<User> paginator = new Paginator<User>(pageable, entities);
+            return paginator.paginate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable, User user) {
+        return null;
+    }
 }

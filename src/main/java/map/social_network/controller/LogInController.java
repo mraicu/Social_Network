@@ -83,6 +83,7 @@ public class LogInController {
         RegisterController addUserController = registerUserLoader.getController();
         addUserController.setService(userService);
 
+
         registerUserStage.show();
     }
 

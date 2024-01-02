@@ -99,8 +99,8 @@ public class MenuController {
 
         if (Objects.equals(page, "search-user-view.fxml")) {
             searchUserController = loader.getController();
-            searchUserController.setService(userService, friendshipService, requestService);
             searchUserController.setUser(user);
+            searchUserController.setService(userService, friendshipService, requestService);
         }
 
         if (homeController == null && Objects.equals(page, "home-view.fxml")) {
@@ -108,18 +108,21 @@ public class MenuController {
             homeController.setService(userService, friendshipService);
         }
 
-        if (requestsController == null && Objects.equals(page, "requests-view.fxml")) {
+        if (Objects.equals(page, "requests-view.fxml")) {
             requestsController = loader.getController();
-            requestsController.setService(userService, friendshipService);
+            requestsController.setUser(user);
+            requestsController.setService(userService, requestService, friendshipService);
         }
 
         if (Objects.equals(page, "friends-view.fxml")) {
             friendsController = loader.getController();
+            friendsController.setUser(user);
             friendsController.setService(userService, friendshipService);
         }
 
-        if (accountController == null && Objects.equals(page, "account-view.fxml")) {
+        if (Objects.equals(page, "account-view.fxml")) {
             accountController = loader.getController();
+            accountController.setUser(user);
             accountController.setService(userService, friendshipService);
         }
 

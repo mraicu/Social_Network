@@ -1,5 +1,6 @@
 package map.social_network.domain.entities;
 
+import javafx.scene.control.Button;
 import map.social_network.domain.Entity;
 import map.social_network.domain.StatusRequest;
 

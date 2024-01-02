@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -15,6 +16,10 @@ import map.social_network.observer.NotifyStatus;
 import map.social_network.observer.Observable;
 import map.social_network.observer.Observer;
 import map.social_network.repository.Repository;
+import map.social_network.repository.paging.Page;
+import map.social_network.repository.paging.Pageable;
+import map.social_network.repository.paging.PageableImplementation;
+import map.social_network.repository.paging.PagingRepository;
 import map.social_network.utils.Utils;
 import map.social_network.utils.events.UserChangeEvent;
 
@@ -22,10 +27,19 @@ public class UserService implements Observable<UserChangeEvent> {
     private List<Observer<UserChangeEvent>> userObservers = new ArrayList<>();
     private Repository<Long, User> userRepository;
     private Repository<Tuple<Long, Long>, Friendship> friendshipRepository;
+    private int page;
+    private int size;
+    private Pageable pageable;
+    private PagingRepository<Long, User> pagingUserRepository;
 
-    public UserService(Repository<Long, User> userRepository, Repository<Tuple<Long, Long>, Friendship> friendshipRepository) {
+    public int getPage(){
+        return page;
+    }
+
+    public UserService(Repository<Long, User> userRepository, Repository<Tuple<Long, Long>, Friendship> friendshipRepository, PagingRepository<Long, User> pagingUserRepository) {
         this.userRepository = userRepository;
         this.friendshipRepository = friendshipRepository;
+        this.pagingUserRepository=pagingUserRepository;
     }
 
     public Optional<User> saveUser(String firstName, String lastName, String email, String password) {
@@ -62,7 +76,9 @@ public class UserService implements Observable<UserChangeEvent> {
     }
 
     public Optional<User> findOneService(Long id) {
-        return this.userRepository.findOne(id);
+        Optional<User> u = this.userRepository.findOne(id);
+        User uu= u.get();
+        return u;
     }
 
     public boolean addFriend(User friend, User newFriend) {
@@ -145,7 +161,6 @@ public class UserService implements Observable<UserChangeEvent> {
 
     @Override
     public void removeObserver(Observer<UserChangeEvent> e) {
-        //
     }
 
     @Override
@@ -153,5 +168,41 @@ public class UserService implements Observable<UserChangeEvent> {
         userObservers.stream().forEach(o -> o.update(t));
     }
 
+    public void setPageSize(int size) {
+        this.size = size;
+    }
+
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public void setPageable(Pageable pageable) {
+        this.pageable = pageable;
+    }
+
+    public Set<User> getPreviousUsers() {
+        if (this.page > 0) {
+            this.page--;
+        }
+        return getUsesOnThisPage(this.page);
+    }
+
+    public Set<User> getNextUsers() {
+        long numUsers = StreamSupport.stream(findAllService().spliterator(), false).count();
+        if ((numUsers / size ) > page) {
+            this.page++;
+        }
+        return getUsesOnThisPage(this.page);
+    }
+
+
+    public Set<User> getUsesOnThisPage(int page) {
+        this.page = page;
+        Pageable pageable = new PageableImplementation(page, size);
+        Page<User> userPage = pagingUserRepository.findAll(pageable);
+        Set<User> p = userPage.getContent().collect(Collectors.toSet());
+        return p;
+    }
 
 }
