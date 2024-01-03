@@ -15,6 +15,7 @@ public class HomeController implements Observer<UserChangeEvent> {
         this.userService.addObserver(this);
         this.friendshipService = friendshipService;
     }
+
     @Override
     public void update(UserChangeEvent userChangeEvent) {
 

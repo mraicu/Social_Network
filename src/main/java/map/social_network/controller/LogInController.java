@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -13,29 +14,46 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import map.social_network.domain.entities.User;
 import map.social_network.service.FriendshipService;
+import map.social_network.service.MessageService;
 import map.social_network.service.RequestService;
 import map.social_network.service.UserService;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.List;
 
 public class LogInController {
     public Button btnLogIn;
     public TextField textFieldEmail;
+    public PasswordField textFieldPassword;
     UserService userService;
     FriendshipService friendshipService;
     RequestService requestService;
+
+    MessageService messageService;
     Alert alert = new Alert(Alert.AlertType.NONE);
     User user;
 
     //TODO de verificat ca exista si parola
-    public void onLogIn(ActionEvent actionEvent) throws IOException {
-        List<User> userList = userService.existsUserByEmail(textFieldEmail.getText());
-        if (!userList.isEmpty()) {
+    public void onLogIn(ActionEvent actionEvent) throws Exception {
+
+        User userByEmail = userService.existsUserByEmail(textFieldEmail.getText());
+        User userByPassword = userService.existsUserByPassword(textFieldPassword.getText());
+
+        if (userByEmail == null) {
+            alert.setAlertType(Alert.AlertType.WARNING);
+            alert.setContentText("Incorrect email!");
+            alert.show();
+            return;
+        }
+        if (userByPassword == null) {
+            alert.setAlertType(Alert.AlertType.WARNING);
+            alert.setContentText("Incorrect password!");
+            alert.show();
+            return;
+        }
+        if (userByEmail != null && userByPassword != null) {
             FXMLLoader menuUserLoader = new FXMLLoader();
 
             FileInputStream fileInputStream = new FileInputStream(
@@ -53,10 +71,11 @@ public class LogInController {
                 menuUserStage.setScene(new Scene(menuAnchorPane));
 
                 MenuController menuController = menuUserLoader.getController();
-                menuController.setService(userService, friendshipService, requestService);
-                menuController.setUser(userList.get(0));
+                menuController.setService(userService, friendshipService, requestService, messageService);
+                menuController.setUser(userByEmail);
 
                 menuUserStage.show();
+                textFieldEmail.setText(null);
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -87,10 +106,11 @@ public class LogInController {
         registerUserStage.show();
     }
 
-    public void setUserService(UserService userService,FriendshipService friendshipService, RequestService requestService) {
+    public void setUserService(UserService userService, FriendshipService friendshipService, RequestService requestService, MessageService messageService) {
         this.userService = userService;
-        this.friendshipService=friendshipService;
-        this.requestService=requestService;
+        this.friendshipService = friendshipService;
+        this.requestService = requestService;
+        this.messageService = messageService;
     }
 
 

@@ -12,6 +12,7 @@ import map.social_network.domain.entities.Friendship;
 import map.social_network.domain.entities.User;
 
 import map.social_network.service.FriendshipService;
+import map.social_network.service.MessageService;
 import map.social_network.service.RequestService;
 import map.social_network.service.UserService;
 
@@ -30,11 +31,12 @@ public class MenuController {
     public Button btnFriends;
     public Button btnAccount;
     public TextField textFieldSearch;
+    public Button btnMessage;
 
     UserService userService;
     FriendshipService friendshipService;
     RequestService requestService;
-
+    MessageService messageService;
     User user;
     Alert alert = new Alert(Alert.AlertType.NONE);
     ObservableList<User> userModel = FXCollections.observableArrayList();
@@ -49,6 +51,8 @@ public class MenuController {
     FriendsController friendsController;
 
     AccountController accountController;
+
+    MultipleMessageController multipleMessageController;
 
     @FXML
     public void onSearchWindow(MouseEvent mouseEvent) throws IOException {
@@ -75,11 +79,18 @@ public class MenuController {
         loadPage("account-view.fxml");
     }
 
-    public void setService(UserService userService, FriendshipService friendshipService, RequestService requestService) {
+    @FXML
+    public void onMessageWindow(MouseEvent mouseEvent) {
+        loadPage("multiple-message-view.fxml");
+    }
+
+    public void setService(UserService userService, FriendshipService friendshipService, RequestService requestService, MessageService messageService) {
         this.userService = userService;
         this.friendshipService = friendshipService;
-        this.requestService=requestService;
+        this.requestService = requestService;
+        this.messageService = messageService;
     }
+
 
     public void setUser(User u) {
         this.user = u;
@@ -100,7 +111,7 @@ public class MenuController {
         if (Objects.equals(page, "search-user-view.fxml")) {
             searchUserController = loader.getController();
             searchUserController.setUser(user);
-            searchUserController.setService(userService, friendshipService, requestService);
+            searchUserController.setService(userService, friendshipService, requestService, messageService);
         }
 
         if (homeController == null && Objects.equals(page, "home-view.fxml")) {
@@ -117,7 +128,7 @@ public class MenuController {
         if (Objects.equals(page, "friends-view.fxml")) {
             friendsController = loader.getController();
             friendsController.setUser(user);
-            friendsController.setService(userService, friendshipService);
+            friendsController.setService(userService, friendshipService, messageService);
         }
 
         if (Objects.equals(page, "account-view.fxml")) {
@@ -125,8 +136,15 @@ public class MenuController {
             accountController.setUser(user);
             accountController.setService(userService, friendshipService);
         }
+        if (Objects.equals(page, "multiple-message-view.fxml")) {
+            multipleMessageController = loader.getController();
+            multipleMessageController.setUser(user);
+            multipleMessageController.setService(userService, messageService);
+        }
 
         borderPaneMenu.setCenter(null);
         borderPaneMenu.setCenter(searchUserAnchorPane);
     }
+
+
 }

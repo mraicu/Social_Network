@@ -1,0 +1,12 @@
+.column-header-background {
+    visibility: hidden;
+    -fx-padding: -1em;
+}
+
+.table-cell {
+    -fx-border-color: transparent;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+}

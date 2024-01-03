@@ -13,6 +13,7 @@
             <Button fx:id="btnSearch" mnemonicParsing="false" onMouseClicked="#onSearchWindow" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #405356;" text="Search" textFill="#e2eceb" />
             <Button fx:id="btnRequests" mnemonicParsing="false" onMouseClicked="#onRequestsWindow" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #405356;" text="Requests" textFill="#e2eceb" />
             <Button fx:id="btnFriends" mnemonicParsing="false" onMouseClicked="#onFriendsWindow" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #405356;" text="Friends" textFill="#e2eceb" />
+            <Button fx:id="btnMessage" mnemonicParsing="false" onMouseClicked="#onMessageWindow" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #405356;" text="Message" textFill="#e2eceb" />
             <Button fx:id="btnAccount" layoutX="10.0" layoutY="115.0" mnemonicParsing="false" onMouseClicked="#onAccountWindow" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #405356;" text="Account" textFill="#e2eceb" />
          </children>
       </VBox>

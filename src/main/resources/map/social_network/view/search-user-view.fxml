@@ -22,6 +22,6 @@
       <Button fx:id="btnPreviousRequests" layoutX="132.0" layoutY="308.0" mnemonicParsing="false" onAction="#onPreviousBtn" text="&lt;" />
       <Button fx:id="btnNextRequests" layoutX="227.0" layoutY="308.0" mnemonicParsing="false" onAction="#onNextBtn" text="&gt;" />
       <Label fx:id="labelPageNumber" alignment="CENTER" contentDisplay="CENTER" layoutX="158.0" layoutY="308.0" prefHeight="25.0" prefWidth="68.0" />
-      <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="146.0" layoutY="369.0" onMousePressed="#onPreferencesSearch" prefHeight="17.0" prefWidth="90.0" text="Preferences" textAlignment="CENTER" />
+      <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="147.0" layoutY="357.0" onMousePressed="#onPreferencesSearch" prefHeight="17.0" prefWidth="90.0" text="Preferences" textAlignment="CENTER" />
    </children>
 </AnchorPane>

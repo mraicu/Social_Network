@@ -32,17 +32,20 @@ public class UserService implements Observable<UserChangeEvent> {
     private Pageable pageable;
     private PagingRepository<Long, User> pagingUserRepository;
 
-    public int getPage(){
+    public int getPage() {
         return page;
     }
 
     public UserService(Repository<Long, User> userRepository, Repository<Tuple<Long, Long>, Friendship> friendshipRepository, PagingRepository<Long, User> pagingUserRepository) {
         this.userRepository = userRepository;
         this.friendshipRepository = friendshipRepository;
-        this.pagingUserRepository=pagingUserRepository;
+        this.pagingUserRepository = pagingUserRepository;
     }
 
-    public Optional<User> saveUser(String firstName, String lastName, String email, String password) {
+    public Optional<User> saveUser(String firstName, String lastName, String email, String password) throws Exception {
+        Utils utils = new Utils();
+        String secretKey = "SecretKey";
+        password = utils.encryptPassword(password, secretKey);
         User user = new User(firstName, lastName, email, password);
         Optional<User> res = userRepository.save(user);
         if (!res.isEmpty()) {
@@ -77,7 +80,7 @@ public class UserService implements Observable<UserChangeEvent> {
 
     public Optional<User> findOneService(Long id) {
         Optional<User> u = this.userRepository.findOne(id);
-        User uu= u.get();
+        User uu = u.get();
         return u;
     }
 
@@ -147,11 +150,29 @@ public class UserService implements Observable<UserChangeEvent> {
         return names;
     }
 
-    public List<User> existsUserByEmail(String email) {
+    public User existsUserByEmail(String email) {
         Predicate<User> namePredicate = u -> u.getEmail().equals(email);
-        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+        List<User> users = StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .filter(namePredicate)
-                .collect(Collectors.toList());
+                .toList();
+        if (!users.isEmpty()) {
+            return users.get(0);
+        } else return null;
+    }
+
+    public User existsUserByPassword(String password) throws Exception {
+
+        String secretKey = "SecretKey";
+        Utils utils = new Utils();
+        String finalPassword = utils.encryptPassword(password, secretKey);
+
+        Predicate<User> namePredicate = u -> u.getPassword().equals(finalPassword);
+        List<User> users = StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                .filter(namePredicate)
+                .toList();
+        if (!users.isEmpty()) {
+            return users.get(0);
+        } else return null;
     }
 
     @Override
@@ -190,7 +211,7 @@ public class UserService implements Observable<UserChangeEvent> {
 
     public Set<User> getNextUsers() {
         long numUsers = StreamSupport.stream(findAllService().spliterator(), false).count();
-        if ((numUsers / size ) > page) {
+        if ((numUsers / size) > page) {
             this.page++;
         }
         return getUsesOnThisPage(this.page);

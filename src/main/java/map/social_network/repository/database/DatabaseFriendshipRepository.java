@@ -145,19 +145,18 @@ public class DatabaseFriendshipRepository extends DatabaseAbstractRepository<Tup
     public Page<Friendship> findAll(Pageable pageable, User user) {
         List<Friendship> entities = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, username, password);
-
              PreparedStatement statement = connection.prepareStatement( "SELECT * FROM friendship WHERE left_user = ? OR right_user = ? ORDER BY left_user LIMIT ? OFFSET ?")) {
-//            while(entities.size()!=3 ){
+
             statement.setLong(1, user.getId());
             statement.setLong(2,user.getId());
             statement.setInt(3, pageable.getPageSize());
             statement.setInt(4, pageable.getPageNumber() * pageable.getPageSize());
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
+
                     entities.add(mapResultSetToEntity(resultSet));
                 }
             }
-//            }
             Paginator<Friendship> paginator = new Paginator<Friendship>(pageable, entities);
             return paginator.paginate();
         } catch (SQLException e) {

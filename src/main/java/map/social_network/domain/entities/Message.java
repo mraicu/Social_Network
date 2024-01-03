@@ -2,7 +2,8 @@ package map.social_network.domain.entities;
 
 import map.social_network.domain.Entity;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,18 +12,18 @@ public class Message extends Entity<Long> {
     private String text;
     private User from;
     private List<User> to = new ArrayList<>();
-    private LocalDateTime date;
+    private Timestamp date;
     private Long replyId;
 
     private static long count = 4;
 
     private Long id;
 
-    public Message(String text, User from, User to, Long replyId) {
+    public Message(String text, User from, User to, Long replyId, Timestamp time) {
         this.id = Long.valueOf(count);
         this.text = text;
         this.from = from;
-        this.date = LocalDateTime.now();
+        this.date = time;
         this.replyId = replyId;
         this.addTo(to);
         setCount(id);
@@ -37,7 +38,7 @@ public class Message extends Entity<Long> {
     }
 
     public String getFromName() {
-        return from.getFirstName()+"-"+from.getLastName();
+        return from.getFirstName() + "-" + from.getLastName();
     }
 
     public String getToName() {
@@ -53,7 +54,7 @@ public class Message extends Entity<Long> {
         return to;
     }
 
-    public LocalDateTime getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
@@ -77,7 +78,7 @@ public class Message extends Entity<Long> {
         this.to.add(to);
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

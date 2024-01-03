@@ -24,7 +24,7 @@ public class RegisterController {
 
     Alert alert = new Alert(Alert.AlertType.NONE);
 
-    public void onRegisterUser(ActionEvent actionEvent) {
+    public void onRegisterUser(ActionEvent actionEvent) throws Exception {
         String firstName = textFieldFirstName.getText();
         String lastName = textFieldLastName.getText();
         String email = textFieldEmail.getText();
@@ -38,7 +38,7 @@ public class RegisterController {
 
         } else {
             Optional<User> res = userService.saveUser(firstName, lastName, email, password);
-            if (!res.isEmpty() && userService.existsUserByEmail(res.get().getEmail()).isEmpty()) {
+            if (!res.isEmpty() && userService.existsUserByEmail(res.get().getEmail()) != null) {
                 Button btnSubmitAdd = (Button) actionEvent.getSource();
                 Stage stage = (Stage) btnSubmitAdd.getScene().getWindow();
                 stage.close();

@@ -14,7 +14,7 @@
    <children>
       <TextField fx:id="textFieldEmail" layoutX="337.0" layoutY="123.0" prefHeight="25.0" prefWidth="149.0" promptText="Email" style="-fx-background-color: transparent; -fx-border-color: #E2ECEB; -fx-border-width: 0px 0px 1px 0px;" />
       <Button fx:id="btnLogIn" layoutX="358.0" layoutY="233.0" mnemonicParsing="false" onAction="#onLogIn" prefHeight="25.0" prefWidth="92.0" text="Log In" textAlignment="CENTER" />
-      <PasswordField layoutX="335.0" layoutY="178.0" prefHeight="25.0" prefWidth="149.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #E2ECEB; -fx-border-width: 0px 0px 1px 0px;" />
+      <PasswordField fx:id="textFieldPassword" layoutX="335.0" layoutY="178.0" prefHeight="25.0" prefWidth="149.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #E2ECEB; -fx-border-width: 0px 0px 1px 0px;" />
       <FontAwesomeIconView fill="#e2eceb" glyphName="USER" layoutX="317.0" layoutY="141.0" size="15" text="" wrappingWidth="14.071428298950195" />
       <FontAwesomeIconView fill="#e2eceb" glyphName="KEY" layoutX="314.0" layoutY="196.0" size="15" text="" />
       <FontAwesomeIconView fill="#e2eceb" glyphName="USERS" layoutX="395.0" layoutY="98.0" size="18" text="" />

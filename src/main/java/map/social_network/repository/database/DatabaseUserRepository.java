@@ -37,7 +37,7 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
 
     @Override
     protected String getDeleteQuery() {
-        return "DELETE FROM users WHERE id = ?";
+        return "DELETE FROM users WHERE users.id = ?";
     }
 
     @Override
@@ -110,14 +110,6 @@ public class DatabaseUserRepository extends DatabaseAbstractRepository<Long, Use
         String password = resultSet.getString("password");
         User user = new User(firstName, lastName, email, password);
         user.setId(id);
-
-//        Image img = new Image(getClass().getResource("view/images/email.png").toExternalForm());
-//        ImageView view = new ImageView(img);
-        Button btnAdd = new Button("+");
-        Button btnSend = new Button("[]");
-//        btnSend.setGraphic(view);
-//        user.setAddBtn(btnAdd);
-//        user.setSendMsg(btnSend);
         return user;
     }
 

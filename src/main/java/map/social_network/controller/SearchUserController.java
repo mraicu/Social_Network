@@ -16,13 +16,16 @@ import map.social_network.domain.entities.Request;
 import map.social_network.domain.entities.User;
 import map.social_network.observer.Observer;
 import map.social_network.service.FriendshipService;
+import map.social_network.service.MessageService;
 import map.social_network.service.RequestService;
 import map.social_network.service.UserService;
 import map.social_network.utils.events.UserChangeEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -55,6 +58,8 @@ public class SearchUserController implements Observer<UserChangeEvent> {
 
     UserService userService;
     FriendshipService friendshipService;
+
+    MessageService messageSevice;
     User user;
     RequestService requestService;
     Alert alert = new Alert(Alert.AlertType.NONE);
@@ -68,11 +73,12 @@ public class SearchUserController implements Observer<UserChangeEvent> {
         this.pageIndex = pageIndex;
     }
 
-    public void setService(UserService userService, FriendshipService friendshipService, RequestService requestService) {
+    public void setService(UserService userService, FriendshipService friendshipService, RequestService requestService, MessageService messageService) {
         this.userService = userService;
         this.userService.addObserver(this);
         this.friendshipService = friendshipService;
         this.requestService = requestService;
+        this.messageSevice = messageService;
 
 
         initModel();
@@ -98,7 +104,39 @@ public class SearchUserController implements Observer<UserChangeEvent> {
             {
                 sendMsgButton.setOnAction(event -> {
                     User selectedUser = getTableView().getItems().get(getIndex());
-                    System.out.println(selectedUser);
+
+                    FXMLLoader onMessageLoader = new FXMLLoader();
+
+                    // Use getClass().getResource() to load the FXML file from the classpath
+                    URL fxmlUrl = getClass().getResource("/map/social_network/view/chat-view.fxml");
+
+
+                    if (fxmlUrl == null) {
+                        throw new RuntimeException("FXML file not found");
+                    }
+
+                    onMessageLoader.setLocation(fxmlUrl);
+
+                    AnchorPane onMessageAnchorPane = null;
+                    String css = this.getClass().getResource("/map/social_network/view/css/message.css").toExternalForm();
+
+
+                    try {
+                        onMessageAnchorPane = onMessageLoader.load();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    Stage messageToStage = new Stage();
+                    messageToStage.setTitle("Chat");
+                    messageToStage.setScene(new Scene(onMessageAnchorPane));
+
+                    ChatController messageController = onMessageLoader.getController();
+                    messageController.setUser(user, selectedUser);
+                    messageController.setUserService(userService, messageSevice);
+
+                    onMessageAnchorPane.getStylesheets().add(css);
+                    messageToStage.show();
                 });
             }
 

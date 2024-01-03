@@ -7,8 +7,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="384.0" style="-fx-background-color: #e2eceb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="map.social_network.controller.AccountController">
    <children>
-      <Label layoutX="32.0" layoutY="334.0" onMousePressed="#onLogOut" prefHeight="46.0" prefWidth="75.0" text="Log Out" />
-      <Label layoutX="286.0" layoutY="334.0" onMousePressed="#onDeleteAccount" prefHeight="46.0" prefWidth="82.0" text="Delet Account" />
+      <Label fx:id="btnLogOut" layoutX="32.0" layoutY="334.0" onMousePressed="#onLogOut" prefHeight="46.0" prefWidth="75.0" text="Log Out" />
+      <Label fx:id="btnDelete" layoutX="286.0" layoutY="334.0" onMousePressed="#onDeleteAccount" prefHeight="46.0" prefWidth="82.0" text="Delet Account" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="113.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/user.png" />
