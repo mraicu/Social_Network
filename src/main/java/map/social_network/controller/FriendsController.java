@@ -1,5 +1,7 @@
 package map.social_network.controller;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,17 +44,17 @@ public class FriendsController implements Observer<FriendshipChangeEvent> {
     ObservableList<User> friendshipsModel = FXCollections.observableArrayList();
     Alert alert = new Alert(Alert.AlertType.NONE);
     FriendshipService friendshipService;
-
     MessageService messageService;
     private int pageIndex = 0;
-
     private int pageSize = 3;
+    SearchUserController searchUserController;
 
     public void setService(UserService userService, FriendshipService friendshipService, MessageService messageService) {
         this.userService = userService;
         this.friendshipService = friendshipService;
         this.friendshipService.addObserver(this);
         this.messageService = messageService;
+
         initModel(pageSize);
     }
 
@@ -72,7 +74,7 @@ public class FriendsController implements Observer<FriendshipChangeEvent> {
         setButtonHandlers();
     }
 
-    private void initModel(int pageSize) {
+    public void initModel(int pageSize) {
         friendshipService.setPageSize(pageSize);
         friendshipService.setUser(user);
 //        Iterable<Friendship> friendships = friendshipService.getFriendshipsOnThisPage(pageSize);
@@ -97,16 +99,17 @@ public class FriendsController implements Observer<FriendshipChangeEvent> {
     private void setButtonHandlers() {
         // Set action handler for the sendMsg button
         columnSendMsg.setCellFactory(tc -> new TableCell<>() {
-            final Button sendMsgButton = new Button("M");
+            final Button sendMsgButton = new Button();
 
             {
+                FontAwesomeIconView iconView = new FontAwesomeIconView(FontAwesomeIcon.ENVELOPE);
+                iconView.setStyleClass("icon");
+                sendMsgButton.setGraphic(iconView);
                 sendMsgButton.setOnAction(event -> {
                     User selectedUser = getTableView().getItems().get(getIndex());
                     FXMLLoader onMessageLoader = new FXMLLoader();
 
-                    // Use getClass().getResource() to load the FXML file from the classpath
                     URL fxmlUrl = getClass().getResource("/map/social_network/view/chat-view.fxml");
-
 
                     if (fxmlUrl == null) {
                         throw new RuntimeException("FXML file not found");
@@ -116,7 +119,6 @@ public class FriendsController implements Observer<FriendshipChangeEvent> {
 
                     AnchorPane onMessageAnchorPane = null;
                     String css = this.getClass().getResource("/map/social_network/view/css/message.css").toExternalForm();
-
 
                     try {
                         onMessageAnchorPane = onMessageLoader.load();
@@ -148,11 +150,13 @@ public class FriendsController implements Observer<FriendshipChangeEvent> {
             }
         });
 
-        // Set action handler for the addBtn button
         columnRemove.setCellFactory(tc -> new TableCell<>() {
-            final Button removeButton = new Button("x");
+            final Button removeButton = new Button();
 
             {
+                FontAwesomeIconView iconView = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+                iconView.setStyleClass("icon");
+                removeButton.setGraphic(iconView);
                 removeButton.setOnAction(event -> {
                     User selectedUser = getTableView().getItems().get(getIndex());
                     friendshipService.deleteFriendship(new Tuple<>(selectedUser.getId(), user.getId()));
@@ -222,6 +226,7 @@ public class FriendsController implements Observer<FriendshipChangeEvent> {
 
         PreferencesController userController = preferencesLoader.getController();
         userController.setService(userService);
+        userController.setFriendsService(this);
 
         updateUserStage.show();
     }

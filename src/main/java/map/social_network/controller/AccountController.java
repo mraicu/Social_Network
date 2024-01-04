@@ -9,7 +9,7 @@ import map.social_network.service.FriendshipService;
 import map.social_network.service.UserService;
 import map.social_network.utils.events.UserChangeEvent;
 
-public class AccountController implements Observer<UserChangeEvent> {
+public class AccountController {
     public Label labelNameAccount;
     public Label labelEmailAccount;
     public Label btnDelete;
@@ -23,7 +23,6 @@ public class AccountController implements Observer<UserChangeEvent> {
 
     public void setService(UserService userService, FriendshipService friendshipService) {
         this.userService = userService;
-        this.userService.addObserver(this);
         this.friendshipService = friendshipService;
     }
 
@@ -31,12 +30,6 @@ public class AccountController implements Observer<UserChangeEvent> {
         this.user = u;
         this.labelEmailAccount.setText(user.getEmail());
         this.labelNameAccount.setText(user.getFullName());
-    }
-
-
-    @Override
-    public void update(UserChangeEvent userChangeEvent) {
-
     }
 
     public void onLogOut(MouseEvent mouseEvent) {

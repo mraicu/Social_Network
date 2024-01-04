@@ -1,5 +1,7 @@
 package map.social_network.controller;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,17 +38,15 @@ public class RequestsController implements Observer<RequestChangeEvent> {
     public TableColumn<Request, Button> columnRemoveRequests;
     public Label labelPageNumber;
     public Button btnPreviousRequests;
-
     UserService userService;
     RequestService requestService;
     FriendshipService friendshipService;
     User user;
     Alert alert = new Alert(Alert.AlertType.NONE);
-
     private int pageIndex = 0;
-
     private int pageSize = 3;
     ObservableList<Request> requestModel = FXCollections.observableArrayList();
+    SearchUserController searchUserController;
 
     public void setService(UserService service, RequestService requestService, FriendshipService friendshipService) {
         this.userService = service;
@@ -69,7 +69,7 @@ public class RequestsController implements Observer<RequestChangeEvent> {
         setButtonHandlers();
     }
 
-    private void initModel(int pageSize) {
+    public void initModel(int pageSize) {
         requestService.setPageSize(pageSize);
         requestService.setUser(user);
         Iterable<Request> requests = requestService.getUsesOnThisPage(pageIndex);
@@ -79,15 +79,16 @@ public class RequestsController implements Observer<RequestChangeEvent> {
     }
 
     private void setButtonHandlers() {
-        // Set action handler for the sendMsg button
         columnRemoveRequests.setCellFactory(tc -> new TableCell<>() {
-            final Button rejectBtn = new Button("x");
+            final Button rejectBtn = new Button();
 
             {
+                FontAwesomeIconView iconView = new FontAwesomeIconView(FontAwesomeIcon.USER_TIMES);
+                iconView.setStyleClass("icon");
+                rejectBtn.setGraphic(iconView);
                 rejectBtn.setOnAction(event -> {
                     Request request = getTableView().getItems().get(getIndex());
                     if (request != null && request.getStatus() == StatusRequest.PENDING) {
-//                        friendshipService.deleteFriendship(new Tuple<>(request.getFrom().getId(), request.getTo().getId()));
                         request.setStatus(StatusRequest.REJECTED);
                         requestService.updateRequest(request);
                     } else {
@@ -111,9 +112,12 @@ public class RequestsController implements Observer<RequestChangeEvent> {
 
         // Set action handler for the addBtn button
         columnConfirmRequests.setCellFactory(tc -> new TableCell<>() {
-            final Button approveBtn = new Button("+");
+            final Button approveBtn = new Button();
 
             {
+                FontAwesomeIconView iconView = new FontAwesomeIconView(FontAwesomeIcon.USER_PLUS);
+                iconView.setStyleClass("icon");
+                approveBtn.setGraphic(iconView);
                 approveBtn.setOnAction(event -> {
                     Request request = getTableView().getItems().get(getIndex());
                     if (request != null && request.getStatus() == StatusRequest.PENDING) {
@@ -155,10 +159,6 @@ public class RequestsController implements Observer<RequestChangeEvent> {
         requestModel.setAll(requestList);
     }
 
-    public void onSettings(MouseEvent mouseEvent) {
-
-    }
-
     @Override
     public void update(RequestChangeEvent requestChangeEvent) {
         initModel(pageSize);
@@ -171,13 +171,14 @@ public class RequestsController implements Observer<RequestChangeEvent> {
         );
         AnchorPane preferencesAnchorPane = preferencesLoader.load(fileInputStream);
 
-
         Stage updateUserStage = new Stage();
         updateUserStage.setTitle("Preferences");
         updateUserStage.setScene(new Scene(preferencesAnchorPane));
 
-        PreferencesController userController = preferencesLoader.getController();
-        userController.setService(userService);
+        PreferencesController prefController = preferencesLoader.getController();
+        prefController.setService(userService);
+        prefController.setRequestService(this);
+
 
         updateUserStage.show();
     }

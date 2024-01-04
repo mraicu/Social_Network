@@ -37,7 +37,7 @@ public class ChatController implements Observer<MessageChangeEvent> {
     public void setUser(User userFrom, User userTo) {
         this.userFrom = userFrom;
         this.userTo = userTo;
-
+        this.labelName.setText(userTo.getFullName());
     }
 
     public void setUserService(UserService userService, MessageService messageSevice) {
@@ -137,7 +137,6 @@ public class ChatController implements Observer<MessageChangeEvent> {
         }
 
     }
-
 
     @Override
     public void update(MessageChangeEvent messageChangeEvent) {

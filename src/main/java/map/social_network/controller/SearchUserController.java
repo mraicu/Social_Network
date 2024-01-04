@@ -1,5 +1,7 @@
 package map.social_network.controller;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,10 +10,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import map.social_network.domain.entities.Friendship;
 import map.social_network.domain.entities.Request;
 import map.social_network.domain.entities.User;
 import map.social_network.observer.Observer;
@@ -23,7 +26,6 @@ import map.social_network.utils.events.UserChangeEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -48,12 +50,6 @@ public class SearchUserController implements Observer<UserChangeEvent> {
     private TableColumn<User, Button> columnSendSearch;
 
     @FXML
-    private Button btnPreviousRequests;
-
-    @FXML
-    private Button btnNextRequests;
-
-    @FXML
     private Label labelPageNumber;
 
     UserService userService;
@@ -64,7 +60,6 @@ public class SearchUserController implements Observer<UserChangeEvent> {
     RequestService requestService;
     Alert alert = new Alert(Alert.AlertType.NONE);
     ObservableList<User> userModel = FXCollections.observableArrayList();
-    ObservableList<Friendship> friendshipsModel = FXCollections.observableArrayList();
     private int pageIndex = 0;
 
     private int pageSize = 3;
@@ -80,8 +75,7 @@ public class SearchUserController implements Observer<UserChangeEvent> {
         this.requestService = requestService;
         this.messageSevice = messageService;
 
-
-        initModel();
+        initModel(this.pageSize);
     }
 
     public void setUser(User u) {
@@ -99,15 +93,17 @@ public class SearchUserController implements Observer<UserChangeEvent> {
     private void setButtonHandlers() {
         // Set action handler for the sendMsg button
         columnSendSearch.setCellFactory(tc -> new TableCell<>() {
-            final Button sendMsgButton = new Button("M");
+            final Button sendMsgButton = new Button();
 
             {
+                FontAwesomeIconView iconView = new FontAwesomeIconView(FontAwesomeIcon.ENVELOPE);
+                iconView.setStyleClass("icon");
+                sendMsgButton.setGraphic(iconView);
                 sendMsgButton.setOnAction(event -> {
                     User selectedUser = getTableView().getItems().get(getIndex());
 
                     FXMLLoader onMessageLoader = new FXMLLoader();
 
-                    // Use getClass().getResource() to load the FXML file from the classpath
                     URL fxmlUrl = getClass().getResource("/map/social_network/view/chat-view.fxml");
 
 
@@ -153,9 +149,12 @@ public class SearchUserController implements Observer<UserChangeEvent> {
 
         // Set action handler for the addBtn button
         columnAddSearch.setCellFactory(tc -> new TableCell<>() {
-            final Button addBtnButton = new Button("+");
+            final Button addBtnButton = new Button();
 
             {
+                FontAwesomeIconView iconView = new FontAwesomeIconView(FontAwesomeIcon.PLUS);
+                iconView.setStyleClass("icon");
+                addBtnButton.setGraphic(iconView);
                 addBtnButton.setOnAction(event -> {
                     User selectedUser = getTableView().getItems().get(getIndex());
 
@@ -186,7 +185,7 @@ public class SearchUserController implements Observer<UserChangeEvent> {
         });
     }
 
-    private void initModel() {
+    public void initModel(int pageSize) {
         userService.setPageSize(pageSize);
         Iterable<User> users = userService.getUsesOnThisPage(pageIndex);
 
@@ -213,7 +212,7 @@ public class SearchUserController implements Observer<UserChangeEvent> {
 
     @Override
     public void update(UserChangeEvent userChangeEvent) {
-        initModel();
+        initModel(this.pageSize);
     }
 
     public void onPreferencesSearch(MouseEvent mouseEvent) throws IOException {
@@ -228,10 +227,12 @@ public class SearchUserController implements Observer<UserChangeEvent> {
         updateUserStage.setTitle("Preferences");
         updateUserStage.setScene(new Scene(preferencesAnchorPane));
 
-        PreferencesController userController = preferencesLoader.getController();
-        userController.setService(userService);
+        PreferencesController prefController = preferencesLoader.getController();
+        prefController.setService(userService);
+        prefController.setSearchService(this);
 
         updateUserStage.show();
+        labelPageNumber.setText("0");
     }
 
 

@@ -17,12 +17,17 @@ public class RegisterController {
     public PasswordField textFieldPassword;
     public TextField textFieldFirstName;
     public TextField textFieldEmail;
-
     UserService userService;
-
     User user;
-
     Alert alert = new Alert(Alert.AlertType.NONE);
+
+    public void setService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public void onRegisterUser(ActionEvent actionEvent) throws Exception {
         String firstName = textFieldFirstName.getText();
@@ -48,13 +53,5 @@ public class RegisterController {
                 alert.show();
             }
         }
-    }
-
-    public void setService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

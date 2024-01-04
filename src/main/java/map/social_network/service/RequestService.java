@@ -94,9 +94,7 @@ public class RequestService implements Observable<RequestChangeEvent> {
 
     @Override
     public void removeObserver(Observer<RequestChangeEvent> e) {
-
     }
-
     @Override
     public void notifyObservers(RequestChangeEvent t) {
         requestObserver.stream().forEach(o -> o.update(t));

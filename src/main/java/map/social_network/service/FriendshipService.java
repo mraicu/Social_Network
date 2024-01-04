@@ -117,9 +117,7 @@ public class FriendshipService implements Observable<FriendshipChangeEvent> {
 
     @Override
     public void removeObserver(Observer<FriendshipChangeEvent> e) {
-
     }
-
     @Override
     public void notifyObservers(FriendshipChangeEvent t) {
         friendshipObserver.stream().forEach(o -> o.update(t));

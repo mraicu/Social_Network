@@ -30,7 +30,6 @@ public class MenuController {
     public Button btnRequests;
     public Button btnFriends;
     public Button btnAccount;
-    public TextField textFieldSearch;
     public Button btnMessage;
 
     UserService userService;
@@ -38,10 +37,6 @@ public class MenuController {
     RequestService requestService;
     MessageService messageService;
     User user;
-    Alert alert = new Alert(Alert.AlertType.NONE);
-    ObservableList<User> userModel = FXCollections.observableArrayList();
-    ObservableList<Friendship> friendshipsModel = FXCollections.observableArrayList();
-
     SearchUserController searchUserController;
 
     HomeController homeController;
@@ -145,6 +140,4 @@ public class MenuController {
         borderPaneMenu.setCenter(null);
         borderPaneMenu.setCenter(searchUserAnchorPane);
     }
-
-
 }

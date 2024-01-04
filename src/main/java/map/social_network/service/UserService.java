@@ -32,10 +32,6 @@ public class UserService implements Observable<UserChangeEvent> {
     private Pageable pageable;
     private PagingRepository<Long, User> pagingUserRepository;
 
-    public int getPage() {
-        return page;
-    }
-
     public UserService(Repository<Long, User> userRepository, Repository<Tuple<Long, Long>, Friendship> friendshipRepository, PagingRepository<Long, User> pagingUserRepository) {
         this.userRepository = userRepository;
         this.friendshipRepository = friendshipRepository;
@@ -189,10 +185,17 @@ public class UserService implements Observable<UserChangeEvent> {
         userObservers.stream().forEach(o -> o.update(t));
     }
 
+    public int getPage() {
+        return page;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
     public void setPageSize(int size) {
         this.size = size;
     }
-
 
     public void setPage(int page) {
         this.page = page;

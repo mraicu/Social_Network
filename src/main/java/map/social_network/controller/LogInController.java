@@ -35,7 +35,13 @@ public class LogInController {
     Alert alert = new Alert(Alert.AlertType.NONE);
     User user;
 
-    //TODO de verificat ca exista si parola
+    public void setUserService(UserService userService, FriendshipService friendshipService, RequestService requestService, MessageService messageService) {
+        this.userService = userService;
+        this.friendshipService = friendshipService;
+        this.requestService = requestService;
+        this.messageService = messageService;
+    }
+
     public void onLogIn(ActionEvent actionEvent) throws Exception {
 
         User userByEmail = userService.existsUserByEmail(textFieldEmail.getText());
@@ -76,6 +82,7 @@ public class LogInController {
 
                 menuUserStage.show();
                 textFieldEmail.setText(null);
+                textFieldPassword.setText(null);
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -102,16 +109,6 @@ public class LogInController {
         RegisterController addUserController = registerUserLoader.getController();
         addUserController.setService(userService);
 
-
         registerUserStage.show();
     }
-
-    public void setUserService(UserService userService, FriendshipService friendshipService, RequestService requestService, MessageService messageService) {
-        this.userService = userService;
-        this.friendshipService = friendshipService;
-        this.requestService = requestService;
-        this.messageService = messageService;
-    }
-
-
 }

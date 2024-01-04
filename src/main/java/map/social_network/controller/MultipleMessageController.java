@@ -21,7 +21,6 @@ public class MultipleMessageController {
     MessageService messageService;
     User userFrom;
 
-
     public void setUser(User userFrom) {
         this.userFrom = userFrom;
     }
