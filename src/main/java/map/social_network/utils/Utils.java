@@ -45,7 +45,16 @@ public class Utils {
         return Base64.getEncoder().encodeToString(encrypted);
     }
 
-    // Method to decrypt an encrypted password
+    // generate a secret key from a given string
+    private static SecretKeySpec generateKey(String secretKey) throws Exception {
+        //Password-Based Key Derivation Function 2 with HmacSHA256
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), "salt".getBytes(), 65536, 256);
+        SecretKey tmp = factory.generateSecret(spec);
+        return new SecretKeySpec(tmp.getEncoded(), "AES");
+    }
+
+    // decrypt an encrypted password
     public static String decryptPassword(String encryptedPassword, String secretKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES");
 
@@ -58,11 +67,6 @@ public class Utils {
         return new String(decrypted);
     }
 
-    // Method to generate a secret key from a given string
-    private static SecretKeySpec generateKey(String secretKey) throws Exception {
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), "salt".getBytes(), 65536, 256);
-        SecretKey tmp = factory.generateSecret(spec);
-        return new SecretKeySpec(tmp.getEncoded(), "AES");
-    }
+
+
 }

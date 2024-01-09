@@ -161,7 +161,6 @@ public class UserService implements Observable<UserChangeEvent> {
         String secretKey = "SecretKey";
         Utils utils = new Utils();
         String finalPassword = utils.encryptPassword(password, secretKey);
-
         Predicate<User> namePredicate = u -> u.getPassword().equals(finalPassword);
         List<User> users = StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .filter(namePredicate)
